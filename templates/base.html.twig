@@ -1,18 +1,102 @@
 <!DOCTYPE html>
-<html>
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-            {{ ux_controller_link_tags() }}
-        {% endblock %}
-
-        {% block javascripts %}
-{% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+        <meta charset="UTF-8" />
+        <title>{% block title %}ACI_Website{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('img/logo_af.png') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+        {% set mois=["Décembre","Novembre","Octobre","Septembre","Août","Juillet","Juin","Mai","Avril","Mars","Février","Janvier"] %}
+        {% set ans=["2016","2015"] %}
+        {% block style %}
+            <style>
+                #admi_aci
+                {
+                    float: right;
+                    background-color: #ecde64;
+                    color: #ecde64;
+                }
+                #admi_aci:hover
+                {
+                    float: right;
+                    background-color: #3aa954;
+                    color: white;
+                }
+            </style> 
+        {% endblock style %}
     </head>
+    
     <body>
-        {% block body %}{% endblock %}
+    <div class="container">
+        <header class="row">
+
+            <div class="col-lg-3">
+                <img src="{{ asset('img/logo.png') }}" alt="logo" class="col-md-3" style="width: 240px"/>
+            </div>
+           
+            
+        </header>
+
+        <div class="row">
+            <nav class="col-sm-3 ">
+
+                <ul class="list-unstyled" >
+                    <div class="acceuil"><a href="{{ path('acceuil') }}" >Accueil</a></div>
+
+                    <div class="presentation"><a href="{{ path('app_presentation') }}">Présentation</a>
+                        
+                    </div>
+                    <li id="list_mois"><a href="{{ path('app_all_events') }}">Evénements</a>
+                        <div id="mois"><h4>Dernières actus</h4>
+                            <p class="sous_lien">
+                                {% for mois in mois %} 
+                                <a href="{{ path('app_liste_actu',{'mois': mois}) }}">{{ mois }}</a>
+                                {% endfor %}
+                               
+                            </p>
+                        </div>
+                    </li>
+                    <div class='projet'><a href="{{ path('app_projets') }}">Projets</a>
+                       
+                    </div>
+                    <li><a href=""> Archives</a>
+                        <div><h3>Archives</h3>
+                             <p class="sous_lien">
+                                {% for an in ans %} 
+                                <a href="{{path('app_actu',{'annee':an }) }}">{{ an }}</a>
+                                {% endfor %}
+                               
+                            </p>
+                        </div>
+                    </li>
+                    <div class="contact"><a href="{{path('app_contact')}}">Contacts</a>
+                       
+                    </div>
+                    <a class="btn" href="{{ path('app_login')}}"id="admi_aci">admi</a>
+                </ul>
+                
+            </nav>
+            {% block body %}{% endblock %}
+        </div>
+
+        <footer >
+            
+            <div class="row">
+	            <div class="col-sm-4 col-sm-offset-4">
+	                
+	                <strong style='font-size:large;'>Association Camerounaise de l'Isère</strong>
+	                
+	            </div>
+            </div>
+            <div class="row">
+                Pour toute information: <b>acigrenoble38@gmail.com</b>
+            </div>
+            <div class="row">
+            	Webmaster:<b>azera9730@gmail.com</b>
+            </div>
+                
+        </footer>
+    </div>
+
+        {% block javascripts %}{% endblock %}
     </body>
 </html>

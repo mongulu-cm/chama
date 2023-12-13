@@ -1,0 +1,344 @@
+{% extends"::layout/layout.html.twig"%}
+ 
+{% block body %}
+
+<section class="col-sm-9" id="corps">
+    {% if eventMod is defined %}
+
+
+        {% set cpte=0  %}
+        {% set cpte1=0  %}
+        <form class="form-horizontal" method="post" action="{{ path('eventMod',{'id':eventMod.id}) }}">
+            <fieldset>
+
+                <!-- Form Name -->
+                <legend>CREATION EVENEMENT</legend>
+
+                <!-- Button (Double) -->
+
+
+                <!-- Text input-->
+                <div class="form-group">
+
+                    <div class="col-md-8 col-md-offset-2">
+                        <input id="titre" name="titre" type="text" placeholder="titre" class="form-control input-md" value="{{ eventMod.titre }}" >
+
+                    </div>
+                </div>
+
+                <!-- Select Basic -->
+                <div class="form-group">
+                    <div class="col-md-8 col-md-offset-2">
+                        <select value="mois" name="mois" class="form-control" >
+                            <option value="janvier">janvier</option>
+                            <option value="février">février</option>
+                            <option value="mars">mars</option>
+                            <option value="avril">avril</option>
+                            <option value="mai">mai</option>
+                            <option value="juin">juin</option>
+                            <option value="juillet">juillet</option>
+                            <option value="août">août</option>
+                            <option value="septembre">septembre</option>
+                            <option value="octobre">octobre</option>
+                            <option value="novembre">novembre</option>
+                            <option value="décembre">décembre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- File Button -->
+
+                <!-- Textarea -->
+                <div class="form-group">
+
+                    <div class="col-md-8 col-md-offset-2">
+                        <textarea class="form-control" id="contenu" name="contenu" required="" style="height: 250px" placeholder="Contenu de l'article" >{{ eventMod.contenu }}</textarea>
+                    </div>
+                </div>
+                <div class=" col-md-8 col-md-offset-2 ">
+                    <a  href="/ACI/drive_api/image.php" id="lien" >Gérer les images de l'évenement.</a>
+                </div></br>
+                <div class="form-group">
+                    <h4 class="row" >choisir la photo d'affiche :</h4>
+                    <ul class="col-md-11 list-unstyled" style="margin-left: 3%;" >
+
+                        {% for i in album %}
+                        {% set cpte=cpte+1 %}
+                        <li class="col-md-3">
+                            <img src="/ACI/web/{{ i.imageAlbum }}" alt=" image " width="165px" height="150px"id="url_mod" >
+                            <input type="radio" value="{{ i.imageAlbum }}" name="image_af" id="image_af" onclick="check();">                          
+                        </li>
+
+                        {% endfor %}
+
+
+                    </ul>
+                    <input type="text"  name="pass" id="pass" style="visibility: hidden"/>
+                    <script>
+                        function check() {
+                            var inputs = document.getElementsByTagName('input'),
+                                    inputsLength = inputs.length,pr=document.getElementById('pass');
+                            for (var i = 0 ; i < inputsLength ; i++)
+                            {
+                                if (inputs[i].type == 'radio' && inputs[i].checked)
+                                {
+                                    pr.value = inputs[i].value;
+
+                                }
+                            }
+
+                        }
+
+                    </script>
+
+                </div>
+
+                <div class="form-group">
+                    <h4 class="row" >choisir les photos pour l'album :</h4>
+                    <ul class="col-md-11 list-unstyled" style="margin-left: 3%;">
+
+
+
+                        {% for i in album %}
+                            {% set cpte1=cpte1+1 %}
+                            <li class="col-md-3">
+                                <img src="/ACI/web/{{ i.imageAlbum }}" alt=" image " width="165px" height="150px" >
+                                <input type="checkbox" value="{{ i.imageAlbum }}" name="image_af" id="image_af" onclick="check_T();">   
+                                <!--__<a href="{{ path('supprimerP',{'id':i.id})}}" ><img src="{{ asset('img/remove.png') }}"/></a>-->
+                            </li>
+
+                        {% endfor %}
+
+
+
+                        <input type="text"  name="pass_t" id="pass_t" style="visibility: hidden"/>
+                    </ul>
+                     <script>
+                        function check_T() {
+                            var inputs = document.getElementsByTagName('input');
+                            inputsLength = inputs.length,pr=document.getElementById('pass_t');
+
+                            for (var i = 0 ; i < inputsLength ; i++)
+                            {
+
+
+                                if (inputs[i].type == 'checkbox' && inputs[i].checked)
+                                {
+
+                                    pr.value += inputs[i].value +";";
+
+
+
+                                }
+                            }
+                            
+
+                        }
+                    </script>
+
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="button1id"></label>
+                    <div class="col-md-8">
+                        <input type="submit" id="button1id" name="button1id" class="btn " onclick="check_T();"/>
+                        <button id="button2" name="button2" class="btn btn-primary">annuler</button>
+
+                    </div>
+
+                </div>
+            </fieldset>
+
+        </form>
+    {% else %}
+
+        <form class="form-horizontal" method="post" action="{{ path('eventTT') }}">
+            <fieldset>
+
+                <!-- Form Name -->
+                <legend>CREATION EVENEMENT</legend>
+
+                <!-- Button (Double) -->
+
+
+                <!-- Text input-->
+                <div class="form-group">
+
+                    <div class="col-md-8 col-md-offset-2">
+                        <input id="titre" name="titre" type="text" placeholder="titre" class="form-control input-md" >
+
+                    </div>
+                </div>
+
+                <!-- Select Basic -->
+                <div class="form-group">
+                    <div class="col-md-8 col-md-offset-2">
+                        <select value="mois" name="mois" class="form-control">
+                            <option value="janvier">janvier</option>
+                            <option value="février">février</option>
+                            <option value="mars">mars</option>
+                            <option value="avril">avril</option>
+                            <option value="mai">mai</option>
+                            <option value="juin">juin</option>
+                            <option value="juillet">juillet</option>
+                            <option value="août">août</option>
+                            <option value="septembre">septembre</option>
+                            <option value="octobre">octobre</option>
+                            <option value="novembre">novembre</option>
+                            <option value="décembre">décembre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- File Button -->
+
+                <!-- Textarea -->
+                <div class="form-group">
+
+                    <div class="col-md-8 col-md-offset-2">
+                        <textarea class="form-control" id="contenu" name="contenu" required="" style="height: 250px" placeholder="Contenu de l'article"></textarea>
+                    </div>
+                </div>
+                <div class=" col-md-8 col-md-offset-2 ">
+                    <a  href="/ACI/drive_api/image.php" id="lien">Gérer les images de l'évenement</a>
+                </div></br>
+                <div class="form-group">
+                    <h4 class="row" >choisir la photo d'affiche :</h4>
+                    <ul class="col-md-11 list-unstyled" style="margin-left: 3%;" >
+                        {% if nombre<=1 %}
+
+
+                        {% else %}
+                            {% for i in 1..nombre  %}
+                                <li class="col-md-3">
+                                    <img src="/ACI/web/img/event{{ event }}/{{ i }}.jpg" alt=" image " width="165px" height="150px" >
+                                    <input type="radio" value="{{ i }}" name="image_af" id="image_af" onclick="check();">
+
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+
+
+                    </ul>
+                    <input type="text"  name="pass" id="pass" style="visibility: hidden"/>
+                    <script>
+                        function check() {
+                            var inputs = document.getElementsByTagName('input'),
+                                    inputsLength = inputs.length,pr=document.getElementById('pass');
+                            for (var i = 0 ; i < inputsLength ; i++)
+                            {
+                                if (inputs[i].type == 'radio' && inputs[i].checked)
+                                {
+                                    pr.value = inputs[i].value;
+
+                                }
+                            }
+                        }
+                    </script>
+
+                </div>
+
+                <div class="form-group">
+                    <h4 class="row" >choisir les photos pour l'album :</h4>
+                    <ul class="col-md-11 list-unstyled" style="margin-left: 3%;">
+                        {% if nombre<=1 %}
+                            Télécharger les images sur google drive!!!
+                        {% else %}
+                            {% for i in 1..nombre  %}
+
+                                <li class="col-md-3">
+                                    <img src="/ACI/web/img/event{{ event }}/{{ i }}.jpg" alt=" image "  width="165px" height="150px" >
+                                    <input type="checkbox" value="{{ i }}" name="{{ i }}"/>
+
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+
+                        <input type="text"  name="pass_t" id="pass_t" style="visibility: hidden"/>
+                    </ul>
+                    <script>
+                        function check_T() {
+                            var inputs = document.getElementsByTagName('input');
+                            inputsLength = inputs.length,pr=document.getElementById('pass_t');
+
+                            for (var i = 0 ; i < inputsLength ; i++)
+                            {
+
+
+                                if (inputs[i].type == 'checkbox' && inputs[i].checked)
+                                {
+
+                                    pr.value += inputs[i].value +";";
+
+
+
+                                }
+                            }
+
+                        }
+                    </script>
+
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="button1id"></label>
+                    <div class="col-md-8">
+                        <input type="submit" id="button1id" name="button1id" class="btn " onclick="check_T();"/>
+                        <button id="button2" name="button2" class="btn btn-primary">annuler</button>
+
+                    </div>
+
+                </div>
+            </fieldset>
+
+        </form>
+    {% endif %}
+<script>
+    var xhr = null;
+    var  xhre= null;
+    var url = document.location.href;
+   
+    if (window.XMLHttpRequest || window.ActiveXObject) {
+        if (window.ActiveXObject)
+        {
+            try {
+                xhr = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch(e) {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+        } else {
+            xhr = new XMLHttpRequest();
+            xhre= new XMLHttpRequest();
+        }
+    } else {
+        alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");}
+
+
+    xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function() {
+
+            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+
+                if(xhr.responseText); // Données textuelles récupérées
+                console.log("url recu!!!")
+            }
+
+        };
+    };
+    var lien=document.getElementById('lien');
+    
+    if(url!="http://association-camerounaise38.org/ACI/web/app_dev.php/edit/new")
+       lien.setAttribute('href',"/ACI/drive_api/image.php?chemin="+url);
+   
+
+
+
+    
+    
+</script>
+</section>
+{% endblock %}

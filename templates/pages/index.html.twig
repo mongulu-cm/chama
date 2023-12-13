@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section class="col-sm-9" id="corps">
+        <article class="col-md-9 col-lg-offset-1">
+            <h3>Bienvenue à l'ACI</h3>
+            <p style="text-align: justify;"> 
+                Bienvenue sur le site web de<b> l'Association Camerounaise de l'Isère </b>Nous organisons <b>une assemblée générale tous les mois</b> entre 18h et 20 h à la maison des Associations de Grenoble:
+            </p>
+            <b>
+                <strong>6 Rue Berthe de Boissieux</strong><br>
+                38000 Grenoble<br>
+                Tél. : 04 76 87 91 90
+            </b>
+            <div>
+                <iframe class="acc_video" src="https://www.youtube.com/embed/4N_qrH86jPk" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <br><br>
+            <p style="text-align: justify; margin-left=20%" ><b>Pour plus d'informations , allez à la rubrique <a href="{{path('app_contact')}}">Contacts</a>.</b>
+            </p>
+        </article>
+    </section>
+{% endblock body %}

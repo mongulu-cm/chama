@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+ 
+{% block body %}
+<section class="col-sm-9" id="corps">
+    <h3> PRESENTATION L'ACI</h3>
+    <div class="col-lg-offset-1 col-sm-10"style="text-align:justify;">
+    <p>       L’association existe depuis <b>1993</b> d’abord sous la dénomination 
+        Association des Élèves, Étudiants, et stagiaires camerounais de Grenoble (AEESCG). 
+        Par la suite, elle a connu un changement de dénomination pour devenir Association Camerounaise de l’Isère
+        (ACI). L’objectif étant de construire une entité commune et sans distinction au sein de laquelle tous les 
+        camerounais du département de l’Isère pouvaient s’y retrouver.</p>
+    <p>
+        Sur le plan juridique, l’ACI est une <b>association de droit français</b> et plus précisément de la <b>loi de 1901</b> 
+        portant sur les associations. Elle a été créée à la suite de plusieurs constatations. D’abord, l’absence 
+        de syndicat ou de toute autre organisation légale pouvant défendre les intérêts des camerounais en France
+        en général et en Isère en particulier.Ensuite, le nombre de camerounais implantés dans l’Isère et 
+        l’augmentation des difficultés de divers ordres rencontrées par ceux-ci. </p>
+
+    <p> C’est au terme de ces 
+        constatations que des compatriotes s’étaient réunis afin de mettre sur pied une organisation susceptible 
+        de permettre à tous les camerounais  de <b>défendre ensemble et avec efficacité nos intérêts</b> et de <b>bâtir une 
+        communauté de vie </b>dans le pays d’accueil. </p>
+    </div>
+
+</section>
+{% endblock %}
+{% block javascripts %}
+
+    <script>
+
+        var show_per_page = 3;
+        var current_page = 0;
+
+        function set_display(first, last)
+        {
+
+            document.queryselector('#content').children().css('display', 'none');
+            document.queryselector('#content').children().slice(first, last).css('display', 'block');
+
+        }
+
+
+        function previous(){
+
+            if(document.querySelector('.active').prev('.page_link').length) go_to_page(current_page - 1);
+
+        }
+
+
+        function next(){
+
+            if(document.querySelector('.active').next('.page_link').length) go_to_page(current_page + 1);
+
+        }
+
+
+        function go_to_page(page_num){
+
+            current_page = page_num;
+            start_from = current_page * show_per_page;
+            end_on = start_from + show_per_page;
+            set_display(start_from, end_on);
+            $('.active').removeClass('active');
+            $('#id' + page_num).addClass('active');
+
+        }
+
+
+        document.ready(function() {
+
+
+            var number_of_pages = Math.ceil($('#content').children().size() / show_per_page);
+            var nav = '<ul class="pagination"><li><a href="javascript:previous();">&laquo;</a>';
+
+            var i = -1;
+            while(number_of_pages > ++i){
+
+                nav += '<li class="page_link'
+                if(!i) nav += ' active';
+                nav += '" id="id' + i +'">';
+                nav += '<a href="javascript:go_to_page(' + i +')">'+ (i + 1) +'</a>';
+
+            }
+
+            nav += '<li><a href="javascript:next();">&raquo;</a></ul>';
+            $('#page_navigation').html(nav);
+            set_display(0, show_per_page);
+
+        });
+    </script>
+{% endblock body %}

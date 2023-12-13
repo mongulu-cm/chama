@@ -1,0 +1,107 @@
+{% extends"::layout/layout.html.twig"%}
+{% block style %}
+    <style>
+        #corps
+        {
+           padding-top: 15px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div id="titre_section" class="col-lg-5 "><h4>Les évènements de l'ACI</h4></div>
+    <section class="col-sm-9" id="corps">
+
+        {% if event|length==0 %}
+        <p>Aucun évement ce mois</p>
+        {% else %}
+
+            {% for  actu in event %}
+            <div class="row">
+                
+                {% if actu.imageAffiche!=null %}
+                <div class="col-md-3"><img src="{{asset(actu.imageAffiche) }}" alt="echec" width="170" height="120"></div>      
+                
+                {% else %}
+                 <div class="col-md-3"><img src="http://www.designofsignage.com/application/symbol/building/image/600x600/no-photo.jpg" alt="Actualité" width="170" height="120"></div>
+                 
+                 {% endif %}
+                <div class="col-lg-7">
+                    <a href="{{ path('fiche_actu',{'id':actu.id}) }}"><h3 style="border-bottom: 1px solid deepskyblue; color: #f69c5a; ;">{{ actu.titre }} </h3></a>
+
+                    <p>{{ actu.contenu|truncate(50, true, '...') }}</p>
+                </div>
+            </div><br>
+             {% endfor %}
+        {% endif %}
+        <div id="page_navigation"> </div>
+
+    </section>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+
+    <script>
+
+        var show_per_page = 3;
+        var current_page = 0;
+
+        function set_display(first, last)
+        {
+
+            $('#content').children().css('display', 'none');
+            $('#content').children().slice(first, last).css('display', 'block');
+
+        }
+
+
+        function previous(){
+
+            if($('.active').prev('.page_link').length) go_to_page(current_page - 1);
+
+        }
+
+
+        function next(){
+
+            if($('.active').next('.page_link').length) go_to_page(current_page + 1);
+
+        }
+
+
+        function go_to_page(page_num){
+
+            current_page = page_num;
+            start_from = current_page * show_per_page;
+            end_on = start_from + show_per_page;
+            set_display(start_from, end_on);
+            $('.active').removeClass('active');
+            $('#id' + page_num).addClass('active');
+
+        }
+
+
+        $(document).ready(function() {
+
+
+            var number_of_pages = Math.ceil($('#content').children().size() / show_per_page);
+            var nav = '<ul class="pagination"><li><a href="javascript:previous();">&laquo;</a>';
+
+            var i = -1;
+            while(number_of_pages > ++i){
+
+                nav += '<li class="page_link'
+                if(!i) nav += ' active';
+                nav += '" id="id' + i +'">';
+                nav += '<a href="javascript:go_to_page(' + i +')">'+ (i + 1) +'</a>';
+
+            }
+
+            nav += '<li><a href="javascript:next();">&raquo;</a></ul>';
+            $('#page_navigation').html(nav);
+            set_display(0, show_per_page);
+
+        });
+
+
+    </script>
+{% endblock %}

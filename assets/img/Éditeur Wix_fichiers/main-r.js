@@ -1,0 +1,822 @@
+(function() {
+	"use strict";
+	
+window.joinURL = joinURL;
+function joinURL() {
+    var url = arguments[0];
+    for (var i = 1; i < arguments.length; ++i) {
+        url = url.replace(/\/$/, '') + '/' + arguments[i].replace(/^\//, '');
+    }
+    return url;
+}
+
+var queryUtil = (function () {
+
+    /**
+     * Get value of URL parameter by its name
+     * @param {string} name
+     * @param {string} query
+     * @returns {string}
+     */
+    function getParameterFromQuery(query, name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
+            results = regex.exec(query);
+        return results && results[1] ? decodeURIComponent(results[1]).replace(/\+/g, ' ') : '';
+    }
+
+    /**
+     * Get state of boolean URL parameter by its name
+     * @param {string} name
+     * @param {string} query
+     * @returns {boolean}
+     */
+    function isParameterTrueInQuery(query, name) {
+        return getParameterFromQuery(query, name) === 'true';
+    }
+
+    return {
+        getParameterFromQuery: getParameterFromQuery,
+        isParameterTrueInQuery: isParameterTrueInQuery,
+        getParameterByName: getParameterFromQuery.bind(null, window.location.search),
+        isParameterTrue: isParameterTrueInQuery.bind(null, window.location.search)
+    };
+}());
+
+
+window.queryUtil = queryUtil;
+
+function PackagesUtil(packagesStructure, query) {
+    'use strict';
+
+    /**
+     * @param {string} str
+     * @param {string} separator
+     * @param {string} equalizer
+     * @return {Object.<String, String>}
+     */
+    function reduceStringToObject(str, separator, equalizer) {
+        return (str || '').split(separator).reduce(function (o, pairString) {
+            var pair = pairString.split(equalizer);
+            o[pair[0]] = pair[1];
+            return o;
+        }, {});
+    }
+
+    var queryParamsObject = reduceStringToObject(query.replace(/^\?/, ''), '&', '=');
+
+    /**
+     * returns a new reactVersions according to the packages query
+     * @param {Object} versionsObject
+     * @returns {Object}
+     */
+    this.getVersionsByQuery = function(versionsObject) {
+        if (!versionsObject || !queryParamsObject) {
+            return versionsObject;
+        }
+        var applied = {};
+
+        function getVersionString(value) {
+            if (/^\d+$/.test(value)) {
+                return 'http://localhost:' + value;
+            }
+            if (/^[\d\.]+$/.test(value)) {
+                return value;
+            }
+        }
+
+        function applyVersion(version, key) {
+            if (version && versionsObject[key]) {
+                applied[key] = version;
+            }
+        }
+
+        Object.keys(versionsObject).forEach(function(key) {
+            applied[key] = versionsObject[key];
+        });
+
+        var packages = reduceStringToObject(queryParamsObject.packages, ',', ':');
+        if (packages.all) {
+            Object.keys(versionsObject).forEach(applyVersion.bind(null, getVersionString(packages.all)));
+        }
+        Object.keys(packages).forEach(function (key) {
+            applyVersion(getVersionString(packages[key]), key);
+        });
+        return applied;
+    };
+
+    /**
+     * changes the confiIg to load packages correctly, accounting the query
+     * @param {Object} config
+     * @returns {Object}
+     */
+    this.buildConfig = function(config) {
+        var debug = (queryParamsObject.debug || '').split(',').filter(Boolean);
+        if (debug.indexOf('all') !== -1) {
+            var debuggableExternals = Object.keys(config.paths).filter(function (path) {
+                return config.paths[path].source;
+            });
+            debug = packagesStructure.concat(debuggableExternals);
+        }
+
+        function isInDebug(i) {
+            return debug.indexOf(i) !== -1
+        }
+
+        //config.paths:
+        Object.keys(config.paths).forEach(function (k) {
+            if (typeof config.paths[k] === 'object' && !(config.paths[k] instanceof Array)) {
+                config.paths[k] = config.paths[k][isInDebug(k) ? 'source' : 'min'];
+            }
+        });
+
+        //config.bundles:
+        config.bundles = config.bundles || {};
+        packagesStructure.filter(function(pkg){return !isInDebug(pkg); }).forEach(function(pkg) {
+           config.bundles[pkg] = pkg;
+            config.paths[pkg] = 'packages-bin/' + pkg + '/' + pkg + '.min';
+        });
+
+        //config.packages:
+        config.packages = config.packages || [];
+        var projectPackages = packagesStructure.filter(isInDebug).map(function (name) {
+            return {
+                name: name,
+                location: 'packages/' + name + '/src/main',
+                main: name
+            };
+        });
+        config.packages = config.packages.concat(projectPackages);
+
+        return config;
+    };
+}
+
+
+////////////////////////////////////////////////////////////////////////
+// This file is generated by grunt-packages DO NOT modify
+////////////////////////////////////////////////////////////////////////
+var packagesUtil = new PackagesUtil(["addPanelData","addPanelInfra","advancedStylePanel","backgroundPresets","baseUI","blog","columnsControls","compPanels","constants","core","databaseEditor","debugTools","designPanel","designPanelUtils","gfppData","helpIds","imageCrop","listsEditing","mediaServices","mobileEditor","pagesMenu","panelUtils","panels","popups","rEditor","santaPreview","savePublish","shoutOut","staticAssets","styles","superAppMenuInfra","symbols","testUtils","textControls","tpa","tpaPanels","uiAnimations","uiConstants","userPreferences","util","videoSearch","wixCode","wixStore"], window.location.search);
+
+////////////////////////////////////////////////////////////////////////
+
+
+function instrument(queryUtil, editorModel) {
+    editorModel = editorModel || {};
+
+    var editorVersion = editorModel.editorVersion;
+    var base = (window.serviceTopology.biServerUrl || 'http://frog.wix.com').replace(/\/$/, '');
+    var suppressbi = queryUtil.isParameterTrue('suppressbi');
+    var isDebug = queryUtil.getParameterByName('debug');
+
+    var performance = window.performance;
+    if (performance && performance.mark) {
+        if (performance.setResourceTimingBufferSize) {
+            if ('onresourcetimingbufferfull' in performance) {
+                performance.onresourcetimingbufferfull = (function () {
+                    var maxSize = 150;
+                    return function () {
+                        maxSize *= 2;
+                        performance.setResourceTimingBufferSize(maxSize);
+                    };
+                }());
+            } else {
+                performance.setResourceTimingBufferSize(isDebug ? 1000 : 300);
+            }
+        }
+        performance.mark('main-r loaded');
+    }
+
+    function getCookie(name) {
+        var re = new RegExp('(?:^|\\W)' + name + '\s*=([^;]*)');
+        var m = document.cookie.match(re);
+        return m ? m[1].trim() : m;
+    }
+
+    var permissionInfo = editorModel.permissionsInfo || {};
+    var implicitParams = (function () {
+        var implicitFields = {
+            ownerId: function() {
+                return permissionInfo.ownerId || '';
+            },
+            roles: function() {
+                var loggedInUserRoles = (permissionInfo.loggedInUserRoles || []).map(function(loggedInUserRole) {
+                    return loggedInUserRole.role;
+                }).join();
+                this.roles = function () {
+                    return loggedInUserRoles;
+                };
+                return this.roles();
+            },
+            esi: function () {
+                return editorModel.editorSessionId || '';
+            },
+            did: function () {
+                return window.siteId || '';
+            },
+            msid: function () {
+                return editorModel.metaSiteId || '';
+            },
+            ts: function (now) {
+                return now - (window.mainLoaded || 0);
+            },
+            c: function (now) {
+                return now;
+            }
+        };
+
+        var newrelic = window.newrelic;
+        if (newrelic) {
+            if (newrelic.setCustomAttribute) {
+                newrelic.setPageViewName(window.location.href.replace(/^[^/]*\/\//, ''));
+
+                var roles = implicitFields.roles();
+                if (roles) {
+                    newrelic.setCustomAttribute('roles', roles);
+                }
+                newrelic.setCustomAttribute('esi', implicitFields.esi());
+                newrelic.setCustomAttribute('did', implicitFields.did());
+                newrelic.setCustomAttribute('msid', implicitFields.msid());
+                newrelic.setCustomAttribute('prefetch', window.afterEditorPrefetch);
+                if (editorVersion) {
+                    newrelic.setCustomAttribute('editorVersion', editorVersion);
+                }
+
+                // Running experiments:
+                var runningExperiments = editorModel.runningExperiments;
+                if (runningExperiments) {
+                    runningExperiments = Object.keys(runningExperiments).filter(function (key) {
+                        return this[key] === 'new';
+                    }, runningExperiments).join('][');
+                    if (runningExperiments) {
+                        newrelic.setCustomAttribute('experiments', '[' + runningExperiments + ']');
+                    }
+                }
+            }
+            if (!suppressbi && editorVersion && newrelic.addPageAction) {
+                newrelic.addPageAction('main-r loaded');
+            }
+        }
+
+        return function (mapFn, omitFn) {
+            var size = 0;
+            var now = Date.now();
+            var payload = Object.keys(implicitFields)
+                .filter(function (key) {
+                    return !omitFn(key);
+                })
+                .map(function (key) {
+                    var result = mapFn(key) + '=' + implicitFields[key](now);
+                    size += result.length;
+                    return result;
+                });
+            payload.size = size;
+            return payload;
+        };
+    }());
+
+    function sendBI(reportDef, params, options) {
+        options = options || {};
+        var map = options.map || {};
+        var omit = options.omit || {};
+        var payload = implicitParams(function (key) {
+            return map[key] || key;
+        }, function (key) {
+            return omit[key];
+        });
+
+        var size = payload.size || 0;
+        params = Object.keys(params || {}).map(function (key) {
+            var value = params[key];
+            if (typeof value === 'string') {
+                if (size + value.length > 1536) {
+                    value = value.substring(0, Math.max(1536 - size, 32));
+                }
+                value = encodeURIComponent(value);
+            }
+            var result = key + '=' + value;
+            size += result.length;
+            return result;
+        });
+        payload = params.concat(payload);
+
+        var endpoint = reportDef.endpoint || 'editor';
+        var evid = reportDef.evid;
+        var src = reportDef.src || 38;
+        payload = payload.length ? '&' + payload.join('&') : '';
+
+        var srcBI = base + '/' + endpoint + '?evid=' + evid + '&src=' + src +
+            '&prefetch=' + (window.afterEditorPrefetch ? 1 : 0) + '&majorVer=3&viewMode=editor' + payload;
+        if (suppressbi) {
+            window.console.log('BI:', srcBI);
+        } else {
+            (new window.Image()).src = srcBI;
+        }
+    }
+
+    var bi = {
+        event: function (reportDef, params) {
+            if (typeof reportDef === 'number') {
+                reportDef = {
+                    evid: reportDef
+                };
+            }
+            sendBI(reportDef, params);
+        },
+        error: (function () {
+            var errorSeverityMap = {
+                recoverable: 10,
+                warning: 20,
+                error: 30,
+                fatal: 40
+            };
+            return function (reportDef, params) {
+                params = params || {};
+                var rd = {
+                    evid: 10,
+                    endpoint: reportDef.endpoint || 'trg'
+                };
+                var p = {
+                    errn: reportDef.errorName,
+                    errc: reportDef.errorCode,
+                    sev: errorSeverityMap[reportDef.severity] || reportDef.severity,
+                    cat: 1,
+                    iss: 1
+                };
+                var ut = getCookie('userType');
+                if (ut) {
+                    p.ut = ut;
+                }
+                Object.keys(params).forEach(function (param) {
+                    p[param] = params[param];
+                });
+                sendBI(rd, p);
+            };
+        }())
+    };
+    window.bi = bi;
+
+    var noErrorInterception = isDebug && !queryUtil.isParameterTrue('bi');
+    if (noErrorInterception || suppressbi || !editorVersion) {
+        return;
+    }
+
+    var sendErrorOnce = function (errorName, errorCode, severity) { //eslint-disable-line func-style
+        sendErrorOnce = function () {}; // only report one error per session
+        var params = Array.prototype.slice.call(arguments, 3).reduce(function (result, arg, index) {
+            result['p' + (index + 1)] = arg;
+            return result;
+        }, {});
+        bi.error({
+            errorName: errorName,
+            errorCode: errorCode,
+            severity: severity
+        }, params);
+    };
+
+    var origOnError = window.onerror || function () {};
+    window.onerror = function (errorMsg, url, line, column, err) {
+        var where = err && typeof err.stack === 'string' ? err.stack : url;
+        sendErrorOnce('JAVASCRIPT_ERROR', 111022, 'fatal', errorMsg, where, line, column);
+        return origOnError.apply(this, arguments);
+    };
+
+    if (window.console) {
+        var origError = window.console.error;
+        if (origError) {
+            window.console.error = function () {
+                sendErrorOnce.bind(null, 'CONSOLE_ERROR', 111023, 'error').apply(null, arguments);
+                return origError.apply(this, arguments);
+            };
+        }
+    }
+
+    var origRjsError = requirejs.onError || function () {};
+    requirejs.onError = function (err) {
+        // because ajv requires js-beautify synchronously even if does not use
+        if (err.message && err.message.indexOf && err.message.indexOf('Module name "js-beautify" has not been loaded yet') === 0) {
+            return;
+        }
+        var modules = (err.requireModules || []).join(';');
+        var where = typeof err.stack === 'string' ? err.stack : '';
+        var errn = err.errn || 'REQUIREJS_ERROR';
+        var errc = err.errc || 111024;
+        var severity = err.severity || 'fatal';
+        sendErrorOnce(errn, errc, severity, err.message, modules, where);
+        return origRjsError.apply(this, arguments); // eslint-disable-line consistent-return
+    };
+}
+
+var persistent = (function () {
+
+    function isAvailable(st) {
+        var unique = 'testStorage' + Date.now();
+        try {
+            st.setItem(unique, unique);
+            var value = st.getItem(unique);
+            st.removeItem(unique);
+            if (value !== unique) {
+                throw 'not equal'; //eslint-disable-line no-throw-literal
+            }
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
+    var storage;
+    if (isAvailable(window.localStorage)) {
+        storage = window.localStorage;
+    } else if (isAvailable(window.sessionStorage)) {
+        storage = window.sessionStorage;
+    } else {
+        storage = {
+            setItem: function () {},
+            getItem: function () {},
+            removeItem: function () {}
+        };
+    }
+
+    return {
+        save: function (key, value) {
+            storage.setItem(key, value);
+        },
+        load: function (key) {
+            return storage.getItem(key);
+        },
+        remove: function (key) {
+            storage.removeItem(key);
+        }
+    };
+}());
+var semverRegex = /(\d)+\.(\d)+\.(\d)+/;
+var onlySemver = /^(\d)+\.(\d)+\.(\d)+$/;
+
+function replaceUrlVersion(url, version) {
+    return url && onlySemver.test(version) ? url.replace(semverRegex, version) : url;
+}
+
+function overrideScriptsLocationMapFromQuery(scriptsLocationMap, overrideParam) {
+    overrideParam.split(',').filter(Boolean).forEach(function (keyValueString) {
+        var pair = keyValueString.split(':');
+        var urlOverride = replaceUrlVersion(scriptsLocationMap[pair[0]], pair[1]);
+        if (urlOverride && scriptsLocationMap[pair[0]] !== urlOverride) {
+            scriptsLocationMap[pair[0]] = urlOverride;
+        }
+    });
+    return scriptsLocationMap;
+}
+
+function getSubdomain(domain) {
+    if (!domain) {
+        return '';
+    }
+    var subDomain = domain.split('.');
+    if (subDomain.length <= 2) {
+        subDomain = domain;
+    } else {
+        var beforeLastPart = subDomain[subDomain.length - 2];
+        var topLevelDomains = {com: true, org: true, net: true, edu: true, gov: true, mil: true, info: true, co: true, ac: true};
+        if (topLevelDomains[beforeLastPart]) {
+            subDomain = subDomain[subDomain.length - 3] + '.' + subDomain[subDomain.length - 2] + '.' + subDomain[subDomain.length - 1];
+        } else {
+            subDomain = subDomain[subDomain.length - 2] + '.' + subDomain[subDomain.length - 1];
+        }
+    }
+    return subDomain;
+}
+/* globals getPloaderSantaConfig, joinURL */
+function getEditorRjsConfig(serviceTopology, editorModel, baseVersion, PackagesUtil) { // eslint-disable-line no-unused-vars
+    'use strict';
+
+    var langsLocation = serviceTopology && serviceTopology.scriptsLocationMap['santa-langs'] || 'http://static.parastorage.com/services/santa-langs/1.194.0';
+    var languageCode = editorModel && editorModel.languageCode || 'en';
+    var langsUrl = joinURL(langsLocation, 'resources/santa-editor/bundles/_generated/santa_editor_' + languageCode + '.json');
+    if (langsUrl.indexOf('http:') === 0) {
+        langsUrl = [langsUrl, langsUrl.replace(/http/, 'https')];
+    }
+
+    var mmgrBaseUrl = serviceTopology ? serviceTopology.mediaManagerUrl : 'http://editor.wix.com/static/services/media-gallery-g5/1.81.0/';
+    var scriptLocation = (serviceTopology && (serviceTopology.scriptsDomainUrl)) || 'http://static.parastorage.com/';
+    var thirdParty = joinURL.bind(null, scriptLocation, 'services', 'third-party');
+    var santaIde = joinURL.bind(null, scriptLocation, 'services', 'santa-ide');
+    var ckeditor = joinURL.bind(null, scriptLocation, 'services', 'ck-editor');
+    var getIntegrationPath = function () {
+        if (baseVersion === 'http://localhost') {
+            return 'http://localhost:4578';
+        }
+        return 'http://s3.amazonaws.com/integration-tests-statics/SNAPSHOT/runners';
+    };
+
+    return {
+        baseUrl: '',
+        paths: {
+            lodash: thirdParty('lodash/3.10.1/lodash.min'),
+            jquery: thirdParty('jquery/2.1.1/dist/jquery.min'),
+            ckeditor: ckeditor('1.223.0/ckeditor'),
+            wixckeditor: {
+                min: 'bower_components/wix-ck-editor/dist/wixckloader',
+                source: 'bower_components/wix-ck-editor/debug/wixckloader'
+            },
+            color: thirdParty('color-convert/0.2.0/color.min'),
+            speakingurl: thirdParty('speakingurl/speakingurl.min'),
+            keyboardMaster: {
+                min: thirdParty('keymaster/1.6.3/keymaster.min'),
+                source: thirdParty('keymaster/1.6.3/keymaster')
+            },
+            react: {
+                min: thirdParty('react/0.13.3/react-with-addons.min'),
+                source: thirdParty('react/0.13.3/react-with-addons')
+            },
+            langs: langsUrl,
+            mediaFrame: joinURL(mmgrBaseUrl, 'scripts/media-frame'),
+            aviary: thirdParty('aviary/3.1.0.243/js/feather'),
+            facebook: ['//connect.facebook.net/en_US/all', 'js/vendor/facebook/facebook.min'],
+            pms: 'js/modules/PMS',
+            jasmine: thirdParty('jasmine/2.1.3/jasmine'),
+            'jasmine-html': thirdParty('jasmine/2.1.3/jasmine-html'),
+            'jasmine-boot': thirdParty('jasmine/2.1.3/jasmine-boot'),
+            bluebird: thirdParty('bluebird/2.9.4/bluebird.min'),
+            plugins: 'js/plugins/bundle/plugins.bundle',
+            santaIde: {
+                min: santaIde('1.35.0/code_edit/built-codeEdit.min'),
+                source: santaIde('1.35.0/code_edit/built-codeEdit')
+            },
+            redux: {
+                min: thirdParty('redux/3.0.5/redux.min'),
+                source: thirdParty('redux/3.0.5/redux')
+            },
+            'redux-immutablejs': thirdParty('redux-immutablejs/0.0.7/redux-immutablejs.min'),
+            immutable: {
+                min: thirdParty('immutable/3.7.5/dist/immutable.min'),
+                source: thirdParty('immutable/3.7.5/dist/immutable')
+            },
+            //ReactProxy: 'js/vendor/ReactProxy',
+            io: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.0/socket.io.min',
+            hot: '../node_modules/santa-utils/common/hot/listener',
+            patcher: '../node_modules/santa-utils/common/hot/mockPatcher'
+        },
+        packages: [
+            {
+                name: 'tpaIntegrationEditor',
+                main: 'tpaIntegrationEditor',
+                location: getIntegrationPath() + '/tpaIntegrationEditor/src/main'
+            }
+        ],
+        bundles: {
+            plugins: ['json', 'domReady', 'experiment', 'pLoader']
+        },
+        shim: {
+            color: {exports: 'Color'},
+            lodash: {exports: '_'},
+            jquery: {exports: '$'},
+            keyboardMaster: {exports: 'key'},
+            react: {exports: 'React'},
+            mediaFrame: {exports: 'MediaFrame', deps: ['jquery']},
+            aviary: {exports: 'featherEditor'},
+            facebook: {exports: 'FB'},
+            'jasmine-html': {deps: ['jasmine']},
+            'jasmine-boot': {deps: ['jasmine', 'jasmine-html']},
+            bluebird: {exports: 'bluebird'}
+        },
+        map: {
+            '*': {
+                'react/addons': 'react'
+            }
+        },
+        pLoader: {
+            santa: getPloaderSantaConfig(serviceTopology, baseVersion, PackagesUtil)
+        },
+        jsx: {
+            baseDefines: {lodash: '_', react: 'React'},
+            fileExtension: '.html'
+        },
+        waitSeconds: 0
+    };
+}
+
+/* global joinURL:false */
+function getFullRjsConfig(rjsConfigFunc, packagesUtil, artifactData, serviceTopology) {
+
+    //Call with serviceTopology and all arguments after
+    var config = rjsConfigFunc.apply(null, Array.prototype.slice.call(arguments, 3));
+
+    config = packagesUtil.buildConfig(config);
+    var isAddress = RegExp.prototype.test.bind(/^https?:\/\//);
+
+    var artifactPath = joinURL(serviceTopology.scriptsDomainUrl, 'services', artifactData.artifactName);
+    if (artifactData.baseVersionOverride) {
+        config.baseUrl = isAddress(artifactData.baseVersionOverride) ?
+          artifactData.baseVersionOverride :
+            joinURL(artifactPath, artifactData.baseVersionOverride);
+    } else {
+        config.baseUrl = serviceTopology.scriptsLocationMap[artifactData.artifactName];
+    }
+    return config;
+}
+
+function runEditor(editorModel, queryUtil, config) {
+    var packagesArr = ['symbols', 'addPanelData', 'rEditor', 'compPanels', 'core', 'wixStore', 'tpa',
+        'util', 'blog', 'jquery', 'react', 'lodash', 'aviary', 'superAppMenuInfra', 'savePublish', 'panels',
+        'addPanelInfra', 'experiment', 'staticAssets', 'pLoader', 'textControls', 'mediaFrame', 'keyboardMaster',
+        'baseUI', 'uiAnimations', 'panelUtils', 'mediaServices', 'color', 'pms', 'databaseEditor', 'json',
+        'gfppData', 'backgroundPresets', 'styles', 'pagesMenu', 'userPreferences', 'popups',
+        'pLoader!santa:skins', 'pLoader!santa:documentServices'];
+
+    if (queryUtil.isParameterTrue('isqa')) {
+        packagesArr.push('pLoader!santa:qaAutomation', 'debugTools');
+    }
+    if (queryUtil.isParameterTrue('isTpaIntegration')) {
+        packagesArr.push('tpaIntegrationEditor', 'jasmine', 'jasmine-html', 'bluebird');
+    }
+    packagesArr.push(editorModel && editorModel.runningExperiments.newCK === 'new' ? 'wixckeditor' : 'ckeditor');
+
+    var prefetch = queryUtil.isParameterTrue('prefetch') || window.location.pathname.indexOf('prefetch') > 0;
+
+    // Preload scripts for caching
+    var onError = errorHandler;
+    if (prefetch) {
+        onError = function () {};
+        var plugins = {
+            pLoader: true,
+            json: true,
+            text: true,
+            experiment: true
+        };
+        var dummy = function () {
+            return {};
+        };
+        var define = window.define;
+        window.define = function (name) {
+            var args = Array.apply(null, arguments);
+            if (!plugins.hasOwnProperty(name)) {
+                args[2] = dummy;
+            }
+            return define.apply(this, args);
+        };
+    }
+
+    requirejs(packagesArr, function () {
+        if (prefetch) {
+            window.bi.event(589); // prefetch finished
+            return;
+        }
+
+        function buildFunctionParametersObject(_pkgs, args) {
+            return _pkgs.reduce(function (result, pkg, index) {
+                result[pkg.replace(/^.*:/, '')] = args[index];
+                return result;
+            }, {});
+        }
+        var p = buildFunctionParametersObject(packagesArr, arguments);
+        p.rEditor.editorMain.start(p);
+    }, onError);
+
+    function errorHandler(err) {
+        if (!config.urlArgs) {
+            if (err.requireModules) {
+                err.requireModules.forEach(function (module) {
+                    requirejs.undef(module);
+                });
+            }
+            config.urlArgs = 'c=' + Date.now();
+            requirejs.config(config);
+            requirejs(packagesArr, function () {
+                err.errn = 'REQUIREJS_RETRY_ERROR';
+                err.errc = 111025;
+                err.severity = 10;
+                requirejs.onError(err);
+            }, function (error) {
+                requirejs.onError(error);
+            });
+        }
+    }
+}
+
+function addExperimentsFromQuery(runningExperiments, queryUtil) {
+  function overrideFromParam(experiments, param, value) {
+    return queryUtil.getParameterByName(param).split(',').filter(Boolean).reduce(function (accum, exp) {
+      accum[exp] = value;
+      return accum;
+    }, experiments);
+  }
+
+  var experiments = Object.keys(runningExperiments).reduce(function(accum, exp) {
+    accum[exp] = runningExperiments[exp];
+    return accum;
+  }, {});
+
+  experiments = overrideFromParam(experiments, 'experiments', 'new');
+  experiments = overrideFromParam(experiments, 'experimentsoff', 'old');
+
+  return experiments;
+}
+
+function identifyForFullStory(fullStory, editorModel) {
+    fullStory.identify(editorModel.editorSessionId, {
+        name: editorModel.userInfo.name,
+        email: editorModel.userInfo.email,
+        userAgent: window.navigator.userAgent,
+        screenHeight: window.screen.height,
+        screenWidth: window.screen.width
+    });
+}
+
+////////////////////////////////////////////////////////////////////////
+// requirejs main-r will be generated from this file
+////////////////////////////////////////////////////////////////////////
+/* eslint santa/enforce-package-access: 0, strict: 0 */
+/* globals instrument, getFullRjsConfig, getEditorRjsConfig, packagesUtil, PackagesUtil, queryUtil, getSubdomain, runEditor, addExperimentsFromQuery, overrideScriptsLocationMapFromQuery, replaceUrlVersion */
+
+// application configuration
+function renderSite() {
+    window.mainLoaded = Date.now();
+
+    window.serviceTopology.mediaManagerUrl = replaceUrlVersion(window.serviceTopology.mediaManagerUrl, queryUtil.getParameterByName('mmgr'));
+    window.serviceTopology.scriptsLocationMap = overrideScriptsLocationMapFromQuery(window.serviceTopology.scriptsLocationMap, queryUtil.getParameterByName('scriptsLocations'));
+
+    var editorModel = window.editorModel;
+    if (editorModel) {
+        editorModel.runningExperiments = addExperimentsFromQuery(editorModel.runningExperiments, queryUtil);
+        editorModel.languageCode = queryUtil.getParameterByName('lang') || editorModel.languageCode;
+    }
+
+    var config = getFullRjsConfig(getEditorRjsConfig,
+                                  packagesUtil,
+                                  {
+                                      baseVersionOverride: queryUtil.getParameterByName('EditorSource'),
+                                      artifactName: 'santa-editor'
+                                  },
+                                  window.serviceTopology,
+                                  editorModel,
+                                  queryUtil.getParameterByName('ReactSource'),
+                                  PackagesUtil);
+
+    var storage = (function (){
+        try {
+            var s = window.sessionStorage;
+            var test = 'ep' + Date.now();
+            s.setItem(test, test);
+            if (s.getItem(test) === test) {
+                s.removeItem(test);
+                return s;
+            }
+        } catch (e) {
+            var data = {};
+            return {
+                setItem: function (k, v) {
+                    data[k] = v;
+                },
+                getItem: function (k) {
+                    return data[k];
+                },
+                removeItem: function (k) {
+                    delete data[k];
+                }
+            };
+        }
+    }());
+    if (queryUtil.isParameterTrue('prefetch')) {
+        storage.setItem('afterEditorPrefetch', 'true');
+    } else {
+        window.afterEditorPrefetch = !!storage.getItem('afterEditorPrefetch');
+        storage.removeItem('afterEditorPrefetch');
+    }
+
+    if (editorModel) {
+        editorModel.editorBase = config.baseUrl;
+        var semverMatches = config.baseUrl.match(/\/(\d+\.\d+\.\d+)\/?$/);
+        editorModel.editorVersion = semverMatches && semverMatches[1];
+
+        instrument(queryUtil, editorModel);
+        window.bi.event(458); // main-r loaded event
+    } else {
+        instrument(queryUtil);
+        window.bi.event(588); // prefetch start
+    }
+
+    requirejs.config(config);
+
+    try {
+        document.domain = getSubdomain(document.domain);
+    } catch (e) {
+        // empty
+    }
+
+    if (queryUtil.getParameterByName('EditorSource') === 'http://localhost/editor-base') {
+        requirejs(['hot', 'jquery'], function (hot, $) {
+            hot.init($, false);
+            runEditor(editorModel, queryUtil, config);
+        });
+    } else {
+        runEditor(editorModel, queryUtil, config);
+    }
+}
+
+if (window.customRenderSite !== undefined) { // allows to override this in other html files as starting points
+    window.customRenderSite();
+} else {
+    renderSite();
+}
+
+})();
