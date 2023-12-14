@@ -3,6 +3,7 @@
         <meta charset="UTF-8" />
         <title>{% block title %}ACI_Website{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+            {{ encore_entry_link_tags('app') }}
         <link rel="icon" type="image/x-icon" href="{{ asset('img/logo_af.png') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
         {% set mois=["Décembre","Novembre","Octobre","Septembre","Août","Juillet","Juin","Mai","Avril","Mars","Février","Janvier"] %}
@@ -21,23 +22,146 @@
                     background-color: #3aa954;
                     color: white;
                 }
+                .container {
+                    width: 100%;
+                    margin: auto;
+                    padding: 0;
+                    display: grid;
+                    grid-template-columns: repeat(12, 1fr);
+                }
+
+                /*** 12 columns layout ***/
+                .row {
+                    display: grid;
+                    grid-template-columns: repeat(12, 1fr);
+                }
+                .col-1 {
+                    grid-column: span 1;
+                }
+                .col-2 {
+                    grid-column: span 2;
+                }
+                .col-3 {
+                    grid-column: span 3;
+                }
+                .col-4 {
+                    grid-column: span 4;
+                }
+                .col-5 {
+                    grid-column: span 5;
+                }
+                .col-6 {
+                    grid-column: span 6;
+                }
+                .col-7 {
+                    grid-column: span 7;
+                }
+                .col-8 {
+                    grid-column: span 8;
+                }
+                .col-9 {
+                    grid-column: span 9;
+                }
+                .col-10 {
+                    grid-column: span 10;
+                }
+                .col-11 {
+                    grid-column: span 11;
+                }
+                .col-12 {
+                    grid-column: span 12;
+                }
+
+                /*** 12 columns layout ***/
+                .width-full {
+                    width: 100%;
+                }
+
+                .list-unstyled {
+                    list-style: none;
+                }
+
+
+                header {
+                    background-image: linear-gradient( green, red , yellow);
+                }
+                footer {
+                    margin-top: 20px;
+                }
+
+                header span {
+                    font-size: 3em;
+                    color: gray;
+                    font-weight: bold;
+                    text-align: center;
+                    margin-top: 1em;
+                    text-shadow: 2px 2px 4px #000000;
+                }
+                .logo_carte {
+                    width: 240px; 
+                    margin-top:10px;
+                    margin-right: 0px;
+                }
+                .flex {
+                    display: flex;
+                }
+                .flex-reverse {
+                    display: flex;
+                    flex-direction: row-reverse;
+                }
+
+                .side-menu {
+                    background-color: #ecde64;
+                    height: 100%;
+                    padding: 0;
+                }
+                .side-menu ul {
+                    padding: 0;
+                    margin: 0;
+                }
+                .side-menu ul li, .acceuil, .presentation, .projet, .contact {
+                   background-color: #4b3e2f;
+                    padding: 0.5em;
+                    margin: 0.5em;
+                    border-radius: 0.5em;
+                    text-align: center;
+                    color: #ef8a10;
+                    text-shadow: 2px 2px 4px #000000;
+                    border-radius: 0.5em;
+                }
+                .side-menu ul li a, .acceuil a, .presentation a, .projet a, .contact a {
+                    color: #ef8a10;
+                    text-decoration: none;
+                }
+
+                .body-template {
+                    margin-left: 20px;
+                    margin-right: 20px;
+                    text-align: center;
+                }
+
             </style> 
         {% endblock style %}
     </head>
     
     <body>
     <div class="container">
-        <header class="row">
-
-            <div class="col-lg-3">
-                <img src="{{ asset('img/logo.png') }}" alt="logo" class="col-md-3" style="width: 240px"/>
+        <header class="row col-12">
+            <div class="col-3">
+                <img src="{{ asset('build/images/logo.png') }}" alt="logo" class="col-3" style="width: 240px"/>
             </div>
-           
-            
+           <span class="col-6"> Association Camerounaise de l'Isère</span>
+           <div class="col-3 flex-reverse">
+                <img
+                    class="logo_carte" 
+                    src="{{ asset('build/images/carte.png') }}" 
+                    alt="logo carte" class="col-3" 
+                    />
+            </div>            
         </header>
 
-        <div class="row">
-            <nav class="col-sm-3 ">
+        <div class="row col-12">
+            <nav class="col-3 side-menu">
 
                 <ul class="list-unstyled" >
                     <div class="acceuil"><a href="{{ path('acceuil') }}" >Accueil</a></div>
@@ -75,22 +199,18 @@
                 </ul>
                 
             </nav>
-            {% block body %}{% endblock %}
+            <div class="col-6 body-template">{% block body %}{% endblock %}</div>
         </div>
 
-        <footer >
+        <footer class="row col-12" >
             
-            <div class="row">
-	            <div class="col-sm-4 col-sm-offset-4">
-	                
-	                <strong style='font-size:large;'>Association Camerounaise de l'Isère</strong>
-	                
-	            </div>
+            <div class="col-4">
+	            <strong style='font-size:large;'>Association Camerounaise de l'Isère</strong>
             </div>
-            <div class="row">
+            <div class="col-4">
                 Pour toute information: <b>acigrenoble38@gmail.com</b>
             </div>
-            <div class="row">
+            <div class="col-4">
             	Webmaster:<b>azera9730@gmail.com</b>
             </div>
                 
@@ -98,5 +218,6 @@
     </div>
 
         {% block javascripts %}{% endblock %}
+            {{ encore_entry_script_tags('app') }}
     </body>
 </html>
