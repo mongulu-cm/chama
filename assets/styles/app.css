@@ -96,13 +96,7 @@ body {
     gap: 16px;
 }
 
-.flex-gap-8 {
-    gap: 32px;
-}
-
 /*** Flexbox align-items ***/
-
-
 
 .primary-color {
     color: #f69c5a;
