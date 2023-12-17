@@ -1,68 +1,40 @@
-{% extends"::layout/layout.html.twig"%}
- {% block stylesheets %}
-     <link rel="stylesheet" href="{{ asset('css/colorbox.css') }}" />
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/colorbox.css') }}"/>
 
- {% endblock %}
+{% endblock %}
 {% block style %}
-<style>
-    #corps
-    {
-        padding-top: 15px;
-    }
-</style>
+	<style>
+		#corps {
+			padding-top: 15px;
+		}
+	</style>
 {% endblock %}
 {% block body %}
-    <section class="col-sm-9" id="corps">
-        <div class="row"><div class="col-md-12" ><img src="{{ asset(event.imageAffiche) }}" alt="Actualité" width="500" height="300">
-                <h4 style="margin-top:40px;"><b>{{ event.titre }}</b> </h4>
-            </div>
-        </div>
+	<section class="col-9" id="corps">
+		<div class="row">
+			<div class="col-12" style="margin-top: 12px;">
+				<img src="{{ asset(actu.imageAffiche) }}" alt="Actualité" width="500" height="300">
+				<h4 style="margin-top:40px;">
+					<b>{{ actu.titre }}</b>
+				</h4>
+			</div>
+		</div>
 
-        <div class="row" >
-            <p align="left" style="padding: 7px;" class="col-md-10 col-md-offset-1">  {{ event.contenu|raw }}</p>
-        </div>
-        <h3 style="text-decoration: underline">Quelques photos de l'évenement</h3>
-        <div class="row">
-            {% if album|length!=0 %}
-                {% for image in album %}
-                    <p class="col-md-3"><a class="group3" href="/ACI/web/{{image.imageAlbum}}" title="ACI" ><img src="/ACI/web/{{image.imageAlbum }}" width="170" height="120"/></a></p>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </section>
-{% endblock %}
-{% block javascripts%}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="{{ asset('js/jquery.colorbox.js')}}"></script>
-
-    <script>
-        $(document).ready(function(){
-            //Examples of how to assign the Colorbox event to elements
-            $(".group1").colorbox({rel:'group1'});
-            $(".group2").colorbox({rel:'group2', transition:"fade"});
-            $(".group3").colorbox({rel:'group3', transition:"none", width:"75%", height:"75%"});
-            $(".group4").colorbox({rel:'group4', slideshow:true});
-            $(".ajax").colorbox();
-            $(".youtube").colorbox({iframe:true, innerWidth:640, innerHeight:390});
-            $(".vimeo").colorbox({iframe:true, innerWidth:500, innerHeight:409});
-            $(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
-            $(".inline").colorbox({inline:true, width:"50%"});
-            $(".callbacks").colorbox({
-                onOpen:function(){ alert('onOpen: colorbox is about to open'); },
-                onLoad:function(){ alert('onLoad: colorbox has started to load the targeted content'); },
-                onComplete:function(){ alert('onComplete: colorbox has displayed the loaded content'); },
-                onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
-                onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
-            });
-
-            $('.non-retina').colorbox({rel:'group5', transition:'none'})
-            $('.retina').colorbox({rel:'group5', transition:'none', retinaImage:true, retinaUrl:true});
-
-            //Example of preserving a JavaScript event for inline calls.
-            $("#click").click(function(){
-                $('#click').css({"background-color":"#f00", "color":"#fff", "cursor":"inherit"}).text("Open this window again and this message will still be here.");
-                return false;
-            });
-        });
-    </script>
+		<div class="row">
+			<p align="left" style="padding: 7px;" class="col-10">
+				{{ actu.contenu|raw }}</p>
+		</div>
+		<h3 style="text-decoration: underline">Quelques photos de l'évenement</h3>
+		<div class="row">
+			{% if actu.albums|length!=0 %}
+				{% for image in actu.albums %}
+					<p class="col-3">
+						<a class="group3" href="{{asset('build/images/' ~ image.imageAlbum)}}" title="ACI">
+						<img src="{{ asset('build/images/' ~ image.imageAlbum) }}" width="170" height="120"/></a>
+					</p>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</section>
 {% endblock %}

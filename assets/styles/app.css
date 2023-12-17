@@ -1,3 +1,111 @@
 body {
     background-color: lightgray;
 }
+
+/*** 12 columns layout ***/
+.row {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+}
+.col-1 {
+    grid-column: span 1;
+}
+.col-2 {
+    grid-column: span 2;
+}
+.col-3 {
+    grid-column: span 3;
+}
+.col-4 {
+    grid-column: span 4;
+}
+.col-5 {
+    grid-column: span 5;
+}
+.col-6 {
+    grid-column: span 6;
+}
+.col-7 {
+    grid-column: span 7;
+}
+.col-8 {
+    grid-column: span 8;
+}
+.col-9 {
+    grid-column: span 9;
+}
+.col-10 {
+    grid-column: span 10;
+}
+.col-11 {
+    grid-column: span 11;
+}
+.col-12 {
+    grid-column: span 12;
+}
+
+/*** 12 columns layout ***/
+.width-full {
+    width: 100%;
+}
+
+.list-unstyled {
+    list-style: none;
+}
+
+/*** Flexbox ***/
+
+.flex {
+    display: flex;
+}
+.flex-reverse {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-jc-center {
+    justify-content: center;
+}
+.flex-jc-space-between {
+    justify-content: space-between;
+}
+.flex-jc-space-around {
+    justify-content: space-around;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+/*** Flexbox gap ***/
+.flex-gap-1 {
+    gap: 4px;
+}
+.flex-gap-2 {
+    gap: 8px;
+}
+.flex-gap-3 {
+    gap: 12px;
+}
+.flex-gap-4 {
+    gap: 16px;
+}
+
+.flex-gap-8 {
+    gap: 32px;
+}
+
+/*** Flexbox align-items ***/
+
+
+
+.primary-color {
+    color: #f69c5a;
+}
+
+

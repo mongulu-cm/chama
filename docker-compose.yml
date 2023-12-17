@@ -5,8 +5,8 @@ services:
   database_pg:
     image: 'postgres:alpine'
     environment:
-      POSTGRES_PASSWORD: main
-      POSTGRES_USER: main
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
       POSTGRES_DB: aci
     ports:
       # To allow the host machine to access the ports below, modify the lines below.

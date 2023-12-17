@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Actu;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,36 +13,53 @@ class ActuController extends AbstractController
     #[Route('/presentation', name: 'app_presentation')]
     public function presentation(): Response
     {
-        return $this->render('actu/presentation.html.twig');
+        return $this->render('pages/presentation.html.twig');
     }
 
     
     #[Route('/allEvents', name: 'app_all_events')]
-    public function allEvents(): Response
+    public function allEvents(EntityManagerInterface $em): Response
     {
-        return $this->render('pages/allEvents.html.twig');
+        $events = $em->getRepository(Actu::class)->findAll();
+        return $this->render('pages/allEvents.html.twig', [
+            'events' => $events,
+        ]);
     }
 
     #[Route('/actu/liste/{mois}', name: 'app_liste_actu')]
     public function listeActu(int $mois, EntityManagerInterface $em): Response
     {
-        $actu = $em->getRepository('App:Actu')->findByMonth($mois);
-        return $this->render('actu/fiche_actu.html.twig', [
-            'actu' => $actu,
+        $actus = $em->getRepository(Actu::class)->findByMonth($mois);
+        return $this->render('pages/list_actu.html.twig', [
+            'actus' => $actus,
+        ]);
+    }
+
+    #[Route('/actu/liste/{annee}', name: 'app_liste_actu_annuel')]
+    public function listeActuAnnuel(string $annee, EntityManagerInterface $em): Response
+    {
+        $actus = $em->getRepository(Actu::class)->findByMonth($annee);
+        return $this->render('pages/list_actu.html.twig', [
+            'actus' => $actus,
         ]);
     }
 
     #[Route('/projets', name: 'app_projets')]
     public function projets(): Response
     {
-        return $this->render('actu/projets.html.twig');
+        return $this->render('pages/projet.html.twig');
     }
 
-    #[Route('/actu/{annee}', name: 'app_actu')]
-    public function actu(int $annee, EntityManagerInterface $em): Response
+    #[Route('/actu/{id}', name: 'app_actu')]
+    public function actu(int $id, EntityManagerInterface $em): Response
     {
-        $actu = $em->getRepository('App:Actu')->findByYear($annee);
-        return $this->render('actu/fiche_actu.html.twig', [
+        $actu = $em->getRepository(Actu::class)->find($id);
+        if (!$actu) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+        return $this->render('pages/fiche_actu.html.twig', [
             'actu' => $actu,
         ]);
     }

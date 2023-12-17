@@ -1,223 +1,180 @@
 <!DOCTYPE html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}ACI_Website{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-            {{ encore_entry_link_tags('app') }}
-        <link rel="icon" type="image/x-icon" href="{{ asset('img/logo_af.png') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
-        {% set mois=["Décembre","Novembre","Octobre","Septembre","Août","Juillet","Juin","Mai","Avril","Mars","Février","Janvier"] %}
-        {% set ans=["2016","2015"] %}
-        {% block style %}
-            <style>
-                #admi_aci
-                {
-                    float: right;
-                    background-color: #ecde64;
-                    color: #ecde64;
-                }
-                #admi_aci:hover
-                {
-                    float: right;
-                    background-color: #3aa954;
-                    color: white;
-                }
-                .container {
-                    width: 100%;
-                    margin: auto;
-                    padding: 0;
-                    display: grid;
-                    grid-template-columns: repeat(12, 1fr);
-                }
-
-                /*** 12 columns layout ***/
-                .row {
-                    display: grid;
-                    grid-template-columns: repeat(12, 1fr);
-                }
-                .col-1 {
-                    grid-column: span 1;
-                }
-                .col-2 {
-                    grid-column: span 2;
-                }
-                .col-3 {
-                    grid-column: span 3;
-                }
-                .col-4 {
-                    grid-column: span 4;
-                }
-                .col-5 {
-                    grid-column: span 5;
-                }
-                .col-6 {
-                    grid-column: span 6;
-                }
-                .col-7 {
-                    grid-column: span 7;
-                }
-                .col-8 {
-                    grid-column: span 8;
-                }
-                .col-9 {
-                    grid-column: span 9;
-                }
-                .col-10 {
-                    grid-column: span 10;
-                }
-                .col-11 {
-                    grid-column: span 11;
-                }
-                .col-12 {
-                    grid-column: span 12;
-                }
-
-                /*** 12 columns layout ***/
-                .width-full {
-                    width: 100%;
-                }
-
-                .list-unstyled {
-                    list-style: none;
-                }
+<head>
+	<meta charset="UTF-8"/>
+	<title>
+		{% block title %}ACI_Website
+		{% endblock %}
+	</title>
+	{% block stylesheets %}{% endblock %}
+	{{ encore_entry_link_tags('app') }}
+	<link rel="icon" type="image/x-icon" href="{{ asset('img/logo_af.png') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+	{% set params = (render(controller('App\\Controller\\PagesController::params'))) | json_decode  %}
+	{% set listMois =[ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'] %}
+</head>
+<body>
+	<style>
+		#admi_aci {
+			float: right;
+			background-color: #ecde64;
+			color: #ecde64;
+		}
+		#admi_aci:hover {
+			float: right;
+			background-color: #3aa954;
+			color: white;
+		}
+		.container {
+			width: 100%;
+			margin: auto;
+			padding: 0;
+			display: grid;
+			grid-template-columns: repeat(12, 1fr);
+		}
 
 
-                header {
-                    background-image: linear-gradient( green, red , yellow);
-                }
-                footer {
-                    margin-top: 20px;
-                }
+		header {
+			background-image: linear-gradient(green, red , yellow);
+		}
+		footer {
+			margin-top: 20px;
+		}
 
-                header span {
-                    font-size: 3em;
-                    color: gray;
-                    font-weight: bold;
-                    text-align: center;
-                    margin-top: 1em;
-                    text-shadow: 2px 2px 4px #000000;
-                }
-                .logo_carte {
-                    width: 240px; 
-                    margin-top:10px;
-                    margin-right: 0px;
-                }
-                .flex {
-                    display: flex;
-                }
-                .flex-reverse {
-                    display: flex;
-                    flex-direction: row-reverse;
-                }
+		header span {
+			font-size: 3em;
+			color: gray;
+			font-weight: bold;
+			text-align: center;
+			margin-top: 1em;
+			text-shadow: 2px 2px 4px #000000;
+		}
+		.logo_carte {
+			width: 240px;
+			margin-top: 10px;
+			margin-right: 0;
+		}
 
-                .side-menu {
-                    background-color: #ecde64;
-                    height: 100%;
-                    padding: 0;
-                }
-                .side-menu ul {
-                    padding: 0;
-                    margin: 0;
-                }
-                .side-menu ul li, .acceuil, .presentation, .projet, .contact {
-                   background-color: #4b3e2f;
-                    padding: 0.5em;
-                    margin: 0.5em;
-                    border-radius: 0.5em;
-                    text-align: center;
-                    color: #ef8a10;
-                    text-shadow: 2px 2px 4px #000000;
-                    border-radius: 0.5em;
-                }
-                .side-menu ul li a, .acceuil a, .presentation a, .projet a, .contact a {
-                    color: #ef8a10;
-                    text-decoration: none;
-                }
+		.side-menu {
+			background-color: #ecde64;
+			height: 100%;
+			padding: 0;
+		}
+		.side-menu ul {
+			padding: 0;
+			margin: 0;
+		}
+		.side-menu ul li,
+		.acceuil,
+		.presentation,
+		.projet,
+		.contact {
+			background-color: #4b3e2f;
+			padding: 0.5em;
+			margin: 0.5em;
+			border-radius: 0.5em;
+			text-align: center;
+			color: #ef8a10;
+			text-shadow: 2px 2px 4px #000000;
+			border-radius: 0.5em;
+		}
+		.side-menu ul li a,
+		.acceuil a,
+		.presentation a,
+		.projet a,
+		.contact a {
+			color: #ef8a10;
+			text-decoration: none;
+		}
 
-                .body-template {
-                    margin-left: 20px;
-                    margin-right: 20px;
-                    text-align: center;
-                }
+		.body-template {
+			margin-left: 20px;
+			margin-right: 20px;
+			text-align: center;
+		}
+        .sous-lien {}
+	</style>
+	<div class="container">
+		<header class="row col-12">
+			<div class="col-3">
+				<img src="{{ asset('build/images/logo.png') }}" alt="logo" class="col-3" style="width: 240px"/>
+			</div>
+			<span class="col-6">
+				Association Camerounaise de l'Isère</span>
+			<div class="col-3 flex-reverse">
+				<img class="logo_carte" src="{{ asset('build/images/carte.png') }}" alt="logo carte" class="col-3"/>
+			</div>
+		</header>
 
-            </style> 
-        {% endblock style %}
-    </head>
-    
-    <body>
-    <div class="container">
-        <header class="row col-12">
-            <div class="col-3">
-                <img src="{{ asset('build/images/logo.png') }}" alt="logo" class="col-3" style="width: 240px"/>
-            </div>
-           <span class="col-6"> Association Camerounaise de l'Isère</span>
-           <div class="col-3 flex-reverse">
-                <img
-                    class="logo_carte" 
-                    src="{{ asset('build/images/carte.png') }}" 
-                    alt="logo carte" class="col-3" 
-                    />
-            </div>            
-        </header>
+		<div class="row col-12">
+			<nav class="col-3 side-menu">
 
-        <div class="row col-12">
-            <nav class="col-3 side-menu">
+				<ul class="list-unstyled">
+					<div class="acceuil">
+						<a href="{{ path('acceuil') }}">Accueil</a>
+					</div>
 
-                <ul class="list-unstyled" >
-                    <div class="acceuil"><a href="{{ path('acceuil') }}" >Accueil</a></div>
+					<div class="presentation">
+						<a href="{{ path('app_presentation') }}">Présentation</a>
 
-                    <div class="presentation"><a href="{{ path('app_presentation') }}">Présentation</a>
-                        
-                    </div>
-                    <li id="list_mois"><a href="{{ path('app_all_events') }}">Evénements</a>
-                        <div id="mois"><h4>Dernières actus</h4>
-                            <p class="sous_lien">
-                                {% for mois in mois %} 
-                                <a href="{{ path('app_liste_actu',{'mois': mois}) }}">{{ mois }}</a>
-                                {% endfor %}
-                               
-                            </p>
-                        </div>
-                    </li>
-                    <div class='projet'><a href="{{ path('app_projets') }}">Projets</a>
-                       
-                    </div>
-                    <li><a href=""> Archives</a>
-                        <div><h3>Archives</h3>
-                             <p class="sous_lien">
-                                {% for an in ans %} 
-                                <a href="{{path('app_actu',{'annee':an }) }}">{{ an }}</a>
-                                {% endfor %}
-                               
-                            </p>
-                        </div>
-                    </li>
-                    <div class="contact"><a href="{{path('app_contact')}}">Contacts</a>
-                       
-                    </div>
-                    <a class="btn" href="{{ path('app_login')}}"id="admi_aci">admi</a>
-                </ul>
-                
-            </nav>
-            <div class="col-6 body-template">{% block body %}{% endblock %}</div>
-        </div>
+					</div>
+					<li id="list_mois">
+						<a href="{{ path('app_all_events') }}">Evénements</a>
+						<div id="mois">
+							<h4>Dernières actus</h4>
+							<p class="flex flex-jc-space-around flex-wrap flex-gap-2">
+								{% if (params|length > 0) %}
+									{% for mois in params['availablesMonths'] %}
+										<a href="{{ path('app_liste_actu',{'mois': mois}) }}">{{ listMois[(mois|number_format) - 1] }}</a>
+									{% endfor %}
+								{% endif %}
+							</p>
+						</div>
+					</li>
+					<div class='projet'>
+						<a href="{{ path('app_projets') }}">Projets</a>
 
-        <footer class="row col-12" >
-            
-            <div class="col-4">
-	            <strong style='font-size:large;'>Association Camerounaise de l'Isère</strong>
-            </div>
-            <div class="col-4">
-                Pour toute information: <b>acigrenoble38@gmail.com</b>
-            </div>
-            <div class="col-4">
-            	Webmaster:<b>azera9730@gmail.com</b>
-            </div>
-                
-        </footer>
-    </div>
+					</div>
+					<li>
+						<h3>Archives</h3>
+						<div>
+							<p class="sous_lien">
+								{% if (params|length > 0) %}
+									{% for an in params['availablesYears'] %}
+										<a href="{{path('app_liste_actu_annuel',{'annee':an }) }}">{{ an }}</a>
+									{% endfor %}
+								{% endif %}
+							</p>
+						</div>
+					</li>
+					<div class="contact">
+						<a href="{{path('app_contact')}}">Contacts</a>
 
-        {% block javascripts %}{% endblock %}
-            {{ encore_entry_script_tags('app') }}
-    </body>
+					</div>
+					<a class="btn" href="{{ path('app_login')}}" id="admi_aci">admin</a>
+				</ul>
+
+			</nav>
+			<div class="col-6 body-template"> {% block body %}{% endblock %}
+				</div>
+			</div>
+
+			<footer class="row col-12">
+
+				<div class="col-4">
+					<strong style='font-size:large;'>Association Camerounaise de l'Isère</strong>
+				</div>
+				<div class="col-4">
+					Pour toute information:
+					<b>acigrenoble38@gmail.com</b>
+				</div>
+				<div class="col-4">
+					Webmaster:<b>azera9730@gmail.com</b>
+				</div>
+
+			</footer>
+		</div>
+
+		{% block javascripts %}{% endblock %}
+		{{ encore_entry_script_tags('app') }}
+	</body>
 </html>
