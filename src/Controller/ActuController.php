@@ -26,7 +26,7 @@ class ActuController extends AbstractController
         ]);
     }
 
-    #[Route('/actu/liste/{mois}', name: 'app_liste_actu')]
+    #[Route('/event/liste/{mois}', name: 'app_liste_actu')]
     public function listeActu(int $mois, EntityManagerInterface $em): Response
     {
         $actus = $em->getRepository(Actu::class)->findByMonth($mois);
@@ -35,7 +35,7 @@ class ActuController extends AbstractController
         ]);
     }
 
-    #[Route('/actu/liste/{annee}', name: 'app_liste_actu_annuel')]
+    #[Route('/event/liste/{annee}', name: 'app_liste_actu_annuel')]
     public function listeActuAnnuel(string $annee, EntityManagerInterface $em): Response
     {
         $actus = $em->getRepository(Actu::class)->findByMonth($annee);
@@ -50,10 +50,10 @@ class ActuController extends AbstractController
         return $this->render('pages/projet.html.twig');
     }
 
-    #[Route('/actu/{id}', name: 'app_actu')]
-    public function actu(int $id, EntityManagerInterface $em): Response
+    #[Route('/event/{id}', name: 'app_actu')]
+    public function actu(int|string $id, EntityManagerInterface $em): Response
     {
-        $actu = $em->getRepository(Actu::class)->find($id);
+        $actu = $em->getRepository(Actu::class)->find((int)$id);
         if (!$actu) {
             throw $this->createNotFoundException(
                 'No product found for id '.$id

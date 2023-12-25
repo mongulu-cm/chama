@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Actu index{% endblock %}
+
+{% block body %}
+    <h1>Actu index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Contenu</th>
+                <th>PublishAt</th>
+                <th>ImageAffiche</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for actu in actus %}
+            <tr>
+                <td>{{ actu.id }}</td>
+                <td>{{ actu.titre }}</td>
+                <td>{{ actu.contenu }}</td>
+                <td>{{ actu.publishAt ? actu.publishAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ actu.imageAffiche }}</td>
+                <td>
+                    <a href="{{ path('app_actu_crud_show', {'id': actu.id}) }}">show</a>
+                    <a href="{{ path('app_actu_crud_edit', {'id': actu.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_actu_crud_new') }}">Create new</a>
+{% endblock %}

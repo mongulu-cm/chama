@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Actu{% endblock %}
+
+{% block body %}
+    <h1>Actu</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ actu.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ actu.titre }}</td>
+            </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ actu.contenu }}</td>
+            </tr>
+            <tr>
+                <th>PublishAt</th>
+                <td>{{ actu.publishAt ? actu.publishAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ImageAffiche</th>
+                <td>{{ actu.imageAffiche }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_actu_crud_index') }}">back to list</a>
+
+    <a href="{{ path('app_actu_crud_edit', {'id': actu.id}) }}">edit</a>
+
+    {{ include('actu_crud/_delete_form.html.twig') }}
+{% endblock %}

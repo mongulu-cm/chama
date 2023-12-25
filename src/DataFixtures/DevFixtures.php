@@ -57,6 +57,14 @@ class DevFixtures extends Fixture
             $manager->persist($actu);
         }
 
+        // Test user with admin roles
+        $member = new \App\Entity\Member();
+        $member->setUsername('admin');
+        $member->setPassword('admin');
+        $member->setRoles(['ROLE_ADMIN']);
+
+        $manager->persist($member);
+
         // Enregistrez toutes les entités
         $manager->flush();
     }
