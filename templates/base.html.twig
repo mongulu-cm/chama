@@ -24,14 +24,6 @@
 			background-color: #3aa954;
 			color: white;
 		}
-		.container {
-			width: 100%;
-			margin: auto;
-			padding: 0;
-			display: grid;
-			grid-template-columns: repeat(12, 1fr);
-		}
-
 
 		header {
 			background-image: linear-gradient(green, red , yellow);
@@ -95,9 +87,31 @@
 			margin-right: 20px;
 			text-align: center;
 		}
-        .sous-lien {}
+		.section {
+			height: 68vh;
+		}
+
+		@media (m-width: 768px) {
+			.container-desktop {
+				display: none;
+			}
+
+		}
+
+		@media (min-width: 1000px) {
+
+			.container-desktop {
+
+				width: 100%;
+				margin: auto;
+				padding: 0;
+				display: grid;
+				grid-template-columns: repeat(12, 1fr);
+				height: 100%;
+			}
+		}
 	</style>
-	<div class="container">
+	<div class="container-desktop">
 		<header class="row col-12">
 			<div class="col-3">
 				<img src="{{ asset('build/images/logo.png') }}" alt="logo" class="col-3" style="width: 240px"/>
@@ -109,7 +123,7 @@
 			</div>
 		</header>
 
-		<div class="row col-12">
+		<div class="row col-12 section">
 			<nav class="col-3 side-menu">
 
 				<ul class="list-unstyled">
@@ -124,8 +138,7 @@
 					<li id="list_mois">
 						<a href="{{ path('app_all_events') }}">Evénements</a>
 						<div id="mois">
-							<h4>Dernières actus</h4>
-							<p class="flex flex-jc-space-around flex-wrap flex-gap-2">
+							<p class="flex flex-jc-space-around flex-wrap flex-gap-2 flex-jc-left">
 								{% if (params|length > 0) %}
 									{% for mois in params['availablesMonths'] %}
 										<a href="{{ path('app_liste_actu',{'mois': mois}) }}">{{ listMois[(mois|number_format) - 1] }}</a>
@@ -161,24 +174,19 @@
 			<div class="col-6 body-template"> {% block body %}{% endblock %}
 				</div>
 			</div>
-
-			<footer class="flex flex-jc-space-between col-12">
-
-				<div class="col-4">
-					<strong style='font-size:large;'>Association Camerounaise de l'Isère</strong>
-				</div>
-				<div class="col-4">
-					Pour toute information:
-					<b>acigrenoble38@gmail.com</b>
-				</div>
-				<div class="col-4">
-					Webmaster:<b>azera9730@gmail.com</b>
-				</div>
-
-			</footer>
 		</div>
+		<footer class="flex flex-jc-space-between col-12">
 
-		{% block javascripts %}{% endblock %}
-		{{ encore_entry_script_tags('app') }}
+			<div class="col-4">
+				<strong style='font-size:large;'>Association Camerounaise de l'Isère</strong>
+			</div>
+			<div class="col-4">
+				Pour toute information:
+				<b>acigrenoble38@gmail.com</b>
+			</div>
+			<div class="col-4">
+				Webmaster:<b>azera9730@gmail.com</b>
+			</div>
+		</footer>
 	</body>
-</html>
+</div></body>{% block javascripts %}{% endblock %}{{ encore_entry_script_tags('app') }}</body></html>

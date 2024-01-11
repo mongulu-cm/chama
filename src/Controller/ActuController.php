@@ -35,11 +35,11 @@ class ActuController extends AbstractController
         ]);
     }
 
-    #[Route('/event/liste/{annee}', name: 'app_liste_actu_annuel')]
+    #[Route('/event/liste/annee/{annee}', name: 'app_liste_actu_annuel')]
     public function listeActuAnnuel(string $annee, EntityManagerInterface $em): Response
     {
         $actus = $em->getRepository(Actu::class)->findByMonth($annee);
-        return $this->render('pages/list_actu.html.twig', [
+        return $this->render('pages/archives.html.twig', [
             'actus' => $actus,
         ]);
     }

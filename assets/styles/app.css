@@ -3,6 +3,21 @@ body {
 }
 
 /*** 12 columns layout ***/
+@media screen and (min-width: 576px) {
+    .row-desktop {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .row-mobile {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+    }
+    
+}
+
 .row {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -76,6 +91,10 @@ body {
 }
 .flex-jc-space-around {
     justify-content: space-around;
+}
+
+.flex-jc-left {
+    justify-content: left;
 }
 
 .flex-wrap {
