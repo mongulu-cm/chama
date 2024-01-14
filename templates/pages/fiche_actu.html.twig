@@ -14,7 +14,7 @@
 	<section class="col-9" id="corps">
 		<div class="row">
 			<div class="col-12" style="margin-top: 12px;">
-				<img src="{{ asset(actu.imageAffiche) }}" alt="Actualité" width="500" height="300">
+				<img src="{{ '/build/images/evenements/' ~ asset(actu.imageAffiche) }}" alt="Actualité" width="500" height="300">
 				<h4 style="margin-top:40px;">
 					<b>{{ actu.titre }}</b>
 				</h4>
@@ -30,8 +30,8 @@
 			{% if actu.albums|length!=0 %}
 				{% for image in actu.albums %}
 					<p class="col-3">
-						<a class="group3" href="{{asset('build/images/' ~ image.imageAlbum)}}" title="ACI">
-						<img src="{{ asset('build/images/' ~ image.imageAlbum) }}" width="170" height="120"/></a>
+						<a class="group3" href="{{'/build/images/evenements/' ~ asset(image.imageAlbum)}}" title="ACI">
+						<img src="{{ '/build/images/evenements/' ~ asset(image.imageAlbum) }}" width="170" height="120"/></a>
 					</p>
 				{% endfor %}
 			{% endif %}

@@ -59,6 +59,23 @@ body {
     grid-column: span 12;
 }
 
+@media(min-width: 1000px) {
+    .col-3-d {
+        grid-column: span 3;
+    }
+}
+@media (max-width : 999px) {
+    .col-1-m {
+        grid-column: span 1;
+    }
+    .col-2-m {
+        grid-column: span 2;
+    }
+    .col-12-m {
+        grid-column: span 12;
+    }
+    
+}
 /*** 12 columns layout ***/
 .width-full {
     width: 100%;

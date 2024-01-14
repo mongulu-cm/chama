@@ -50,55 +50,48 @@
 			margin-right: 0;
 		}
 
-		.side-menu {
-			background-color: #ecde64;
-			height: 100%;
-			padding: 0;
-		}
-		.side-menu ul {
-			padding: 0;
-			margin: 0;
-		}
-		.side-menu ul li,
-		.acceuil,
-		.presentation,
-		.projet,
-		.contact {
-			background-color: #4b3e2f;
-			padding: 0.5em;
-			margin: 0.5em;
-			border-radius: 0.5em;
-			text-align: center;
-			color: #ef8a10;
-			text-shadow: 2px 2px 4px #000000;
-			border-radius: 0.5em;
-		}
-		.side-menu ul li a,
-		.acceuil a,
-		.presentation a,
-		.projet a,
-		.contact a {
-			color: #ef8a10;
-			text-decoration: none;
-		}
 
-		.body-template {
-			margin-left: 20px;
-			margin-right: 20px;
-			text-align: center;
-		}
-		.section {
-			height: 68vh;
-		}
-
-		@media (m-width: 768px) {
+		@media(max-width: 999px) {
 			.container-desktop {
+				display: block;
+			}
+
+			.container-mobile {
+				width: 100%;
+				margin: auto;
+				padding: 0;
+				display: grid;
+				grid-template-columns: repeat(12, 1fr);
+				height: 100%;
+
+			}
+
+			.side-menu {
+				background-color: grey;
+			}
+			.side-menu ul {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+			.side-menu ul li {
+				font-size: 24px;
+				border: 2px black	;
+			}
+
+			#list_mois {
+				display: none;
+			}
+
+			.sous_lien {
 				display: none;
 			}
 
 		}
 
-		@media (min-width: 1000px) {
+		@media(min-width: 1000px) {
 
 			.container-desktop {
 
@@ -108,6 +101,47 @@
 				display: grid;
 				grid-template-columns: repeat(12, 1fr);
 				height: 100%;
+			}
+
+			.side-menu {
+				background-color: #ecde64;
+				height: 100%;
+				padding: 0;
+			}
+			.side-menu ul {
+				padding: 0;
+				margin: 0;
+			}
+			.side-menu ul li,
+			.acceuil,
+			.presentation,
+			.projet,
+			.contact {
+				background-color: #4b3e2f;
+				padding: 0.5em;
+				margin: 0.5em;
+				border-radius: 0.5em;
+				text-align: center;
+				color: #ef8a10;
+				text-shadow: 2px 2px 4px #000000;
+				border-radius: 0.5em;
+			}
+			.side-menu ul li a,
+			.acceuil a,
+			.presentation a,
+			.projet a,
+			.contact a {
+				color: #ef8a10;
+				text-decoration: none;
+			}
+
+			.body-template {
+				margin-left: 20px;
+				margin-right: 20px;
+				text-align: center;
+			}
+			.section {
+				height: 68vh;
 			}
 		}
 	</style>
@@ -124,7 +158,7 @@
 		</header>
 
 		<div class="row col-12 section">
-			<nav class="col-3 side-menu">
+			<nav class="col-3-m col-3-d col-12-m side-menu">
 
 				<ul class="list-unstyled">
 					<div class="acceuil">
@@ -167,7 +201,7 @@
 						<a href="{{path('app_contact')}}">Contacts</a>
 
 					</div>
-					<a class="btn" href="{{ path('app_login')}}" id="admi_aci">admin</a>
+					{# <a class="btn" href="{{ path('app_login')}}" id="admi_aci">admin</a> #}
 				</ul>
 
 			</nav>
@@ -188,5 +222,7 @@
 				Webmaster:<b>azera9730@gmail.com</b>
 			</div>
 		</footer>
+		{% block javascripts %}{% endblock %}
+		{{ encore_entry_script_tags('app') }}
 	</body>
-</div></body>{% block javascripts %}{% endblock %}{{ encore_entry_script_tags('app') }}</body></html>
+</div></body></html>

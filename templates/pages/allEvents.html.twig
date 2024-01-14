@@ -19,7 +19,7 @@
 				<div class="row">
 
 					{% if actu.imageAffiche!=null %}
-						<div class="col-3"><img src="{{asset(actu.imageAffiche) }}" alt="echec" width="170" height="120"></div>
+						<div class="col-3"><img src="{{'/build/images/evenements/' ~ asset(actu.imageAffiche) }}" alt="echec" width="170" height="120"></div>
 
 					{% else %}
 						<div class="col-3"><img src="http://www.designofsignage.com/application/symbol/building/image/600x600/no-photo.jpg" alt="Actualité" width="170" height="120"></div>
