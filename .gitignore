@@ -13,9 +13,6 @@
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
-/assets/img/evenements
-/assets/img/actu
-
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
