@@ -23,6 +23,7 @@ class ActuController extends AbstractController
         $events = $em->getRepository(Actu::class)->findAll();
         return $this->render('pages/allEvents.html.twig', [
             'events' => $events,
+            'all' => 'all'
         ]);
     }
 

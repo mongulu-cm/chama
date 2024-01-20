@@ -7,7 +7,7 @@
 	</title>
 	{% block stylesheets %}{% endblock %}
 	{{ encore_entry_link_tags('app') }}
-	<link rel="icon" type="image/x-icon" href="{{ asset('img/logo_af.png') }}"/>
+	<link rel="icon" type="image/x-icon" href="{{ asset('build/images/logo_af.png') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
 	{% set params = (render(controller('App\\Controller\\PagesController::params'))) | json_decode  %}
 	{% set listMois =[ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'] %}
@@ -29,11 +29,16 @@
 			background-image: linear-gradient(green, red , yellow);
 		}
 		footer {
-			height: 30px;
+			height: 3vh;
 			background-color: #ecde64;
 			opacity: 0.9;
 			display: flex;
 			align-items: center;
+			padding-right: 10px;
+			padding-left: 10px;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
 		}
 
 		header span {
@@ -48,6 +53,16 @@
 			width: 240px;
 			margin-top: 10px;
 			margin-right: 0;
+		}
+
+		.body-template {
+			margin-left: 20px;
+			margin-right: 20px;
+			text-align: center;
+		}
+		.container-desktop {
+			position: relative;
+			min-height: 95vh;
 		}
 
 
@@ -68,6 +83,8 @@
 
 			.side-menu {
 				background-color: grey;
+
+				background-image: linear-gradient(yellow, grey);
 			}
 			.side-menu ul {
 				display: flex;
@@ -77,13 +94,51 @@
 				padding-right: 10px;
 			}
 			.side-menu ul li {
+				flex-grow: 1;
 				font-size: 24px;
-				border: 2px black	;
+				padding-top: 25px;
+				padding-bottom: 25px;
+				border: 2px black solid;
+				font-weight: bold;
+				text-align: center;
 			}
 
-			#list_mois {
+			.side-menu ul a {
+				color: orange;
+				text-decoration: none;
+				text-shadow: 2px 2px 4px #000000;
+			}
+
+			.side-menu ul a:hover {
+				color: #ecde64;
+				text-decoration: none;
+			}
+
+			.side-menu ul a:active {
+				color: #ecde64;
+				text-decoration: none;
+			}
+
+			#mois_d {
 				display: none;
 			}
+
+			#mois_m p{
+				margin-left: 20px;
+				display: flex;
+				gap: 10px;
+				flex-direction: row;
+				justify-content: space-around;
+				font-size: 24px;
+				width: 90vw;				
+			}
+
+			#mois_m a {
+				color: orange;
+				text-decoration: none;
+				text-shadow: 2px 2px 4px #000000;
+			}
+
 
 			.sous_lien {
 				display: none;
@@ -92,7 +147,9 @@
 		}
 
 		@media(min-width: 1000px) {
-
+			#mois_m {
+				display: none;
+			}
 			.container-desktop {
 
 				width: 100%;
@@ -134,12 +191,6 @@
 				color: #ef8a10;
 				text-decoration: none;
 			}
-
-			.body-template {
-				margin-left: 20px;
-				margin-right: 20px;
-				text-align: center;
-			}
 			.section {
 				height: 68vh;
 			}
@@ -161,17 +212,17 @@
 			<nav class="col-3-m col-3-d col-12-m side-menu">
 
 				<ul class="list-unstyled">
-					<div class="acceuil">
+					<li class="acceuil">
 						<a href="{{ path('acceuil') }}">Accueil</a>
-					</div>
+					</li>
 
-					<div class="presentation">
+					<li class="presentation">
 						<a href="{{ path('app_presentation') }}">Présentation</a>
 
-					</div>
+					</li>
 					<li id="list_mois">
-						<a href="{{ path('app_all_events') }}">Evénements</a>
-						<div id="mois">
+						<a href="{{ path('app_all_events') }}" id="event_list">Evénements</a>
+						<div id="mois_d">
 							<p class="flex flex-jc-space-around flex-wrap flex-gap-2 flex-jc-left">
 								{% if (params|length > 0) %}
 									{% for mois in params['availablesMonths'] %}
@@ -181,12 +232,12 @@
 							</p>
 						</div>
 					</li>
-					<div class='projet'>
+					<li class='projet'>
 						<a href="{{ path('app_projets') }}">Projets</a>
 
-					</div>
+					</li>
 					<li>
-						<h3>Archives</h3>
+						<a href="#">Archives</a>
 						<div>
 							<p class="sous_lien">
 								{% if (params|length > 0) %}
@@ -197,15 +248,26 @@
 							</p>
 						</div>
 					</li>
-					<div class="contact">
+					<li class="contact">
 						<a href="{{path('app_contact')}}">Contacts</a>
 
-					</div>
+					</li>
 					{# <a class="btn" href="{{ path('app_login')}}" id="admi_aci">admin</a> #}
 				</ul>
 
 			</nav>
-			<div class="col-6 body-template"> {% block body %}{% endblock %}
+			{% if all is defined %}
+				<div id="mois_m">
+					<p class="flex">
+						{% if (params|length > 0) %}
+							{% for mois in params['availablesMonths'] %}
+								<a href="{{ path('app_liste_actu',{'mois': mois}) }}">{{ listMois[(mois|number_format) - 1] }}</a>
+							{% endfor %}
+						{% endif %}
+					</p>
+				</div>
+			{% endif %}
+			<div class="col-12-m col-9-d body-template"> {% block body %}{% endblock %}
 				</div>
 			</div>
 		</div>
@@ -219,7 +281,8 @@
 				<b>acigrenoble38@gmail.com</b>
 			</div>
 			<div class="col-4">
-				Webmaster:<b>azera9730@gmail.com</b>
+				Adminstrateur:
+				<b>azera9730@gmail.com</b>
 			</div>
 		</footer>
 		{% block javascripts %}{% endblock %}
