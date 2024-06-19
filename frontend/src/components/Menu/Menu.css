@@ -1,0 +1,21 @@
+nav.ui.container {
+    height: 72px;
+    display: flex;
+    align-items: center;
+}
+.header-menu{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 100%;
+
+}
+
+nav>div>.menu-item:hover {
+    cursor: pointer;
+    background: #bdcbf2;
+}
+
+.logo {
+    width: 50px;
+    margin-top: 14px;
+    margin-right: 64px;
+}

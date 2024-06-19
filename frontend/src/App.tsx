@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from 'react'
+import { Content } from './services/models/content';
+import { ContentService } from './services/content.service';
+import Menu from './components/Menu/Menu';
+
+export default class App extends React.Component<unknown, Content> {
+
+  componentDidMount(): void {
+    Promise.all([ContentService.getMenuContent(), ContentService.getMetaContent()]).then(([menu, meta]) => {
+      this.setState({
+        menu: menu
+      });
+    });
+  }
+
+  render() {
+    // const { menu } = this.state;
+    let menuTag: JSX.Element | null = null;
+    if (this.state?.menu) {
+      menuTag = <Menu {...this.state?.menu} />;
+    } else {
+      menuTag = <div>Loading...</div>;
+    }
+
+    return (
+      <div>
+        {menuTag}
+      </div>
+    )
+  }
 }
 
-export default App;
