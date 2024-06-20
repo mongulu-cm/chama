@@ -24,13 +24,13 @@ export default class Menu extends React.Component<MenuContent> {
     const { items, logo } = this.props;
     const tags = items.map((item, index) => {
       const className = index === 0 ? 'item active menu-item' : 'item menu-item';
-      return <div className={className} key={item.url} onClick={(event) => this.handleClick(event, item.url)}>{item.title}</div>
+      return <div className={className} key={item.url} onClick={(event: any) => this.handleClick(event, item.url)}>{item.title}</div>
     });
     return (
       <div className='header-menu'>
-        <nav className='ui container'>
+        <nav className='container'>
           {logo && <img src={logo} alt='logo' className='logo' />}
-          <div className="ui secondary right menu">{tags}</div>
+          <div className="flex flex-col sm:flex-row">{tags}</div>
         </nav>
       </div>
     )
