@@ -2,7 +2,7 @@
  * Service to manage content
  */
 
-import { MenuContent } from "./models/menu";
+import { MenuContent, SubMenuContent } from "./models/menu";
 import { MetaData } from "./models/meta-data";
 
 
@@ -36,22 +36,22 @@ export class ContentService {
                 url: '/acceuil',
                 items: [
                     {
-                        title: 'acceuil',
+                        title: 'Acceuil',
                         url: 'acceuil',
                         component: 'Welcome'
                     },
                     {
-                        title: 'evenements',
+                        title: 'Evenements',
                         url: 'listes-evenements',
                         component: 'Welcome'
                     },
                     {
-                        title: 'projects',
+                        title: 'Projects',
                         url: 'projets',
                         component: 'Welcome'
                     },
                     {
-                        title: 'contacts',
+                        title: 'Contacts',
                         url: 'nous-contactez',
                         component: 'Welcome'
                     }
@@ -60,6 +60,29 @@ export class ContentService {
 
             } as MenuContent
             );
+        });
+    }
+
+    /**
+     * Get SubMenu content
+     */
+    public static getSubMenuContent(): Promise<SubMenuContent> {
+        return new Promise((resolve, reject) => {
+            resolve({
+                contactPhone: '514-555-5555',
+                title: 'Ceci est un titre de teaser pour Chama',
+                subscriptionButton: true,
+                listIconLink: [
+                    {
+                        icon: 'phone',
+                        url: 'tel:514-555-5555'
+                    },
+                    {
+                        icon: 'email',
+                        url: 'mailto:azera'
+                    }
+                ]
+            } as SubMenuContent);
         });
     }
 } 

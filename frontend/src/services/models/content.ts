@@ -1,5 +1,6 @@
-import { MenuContent } from "./menu";
+import { MenuContent, SubMenuContent } from "./menu";
 
 export interface Content {
     menu: MenuContent;
+    subMenu: SubMenuContent,
 }

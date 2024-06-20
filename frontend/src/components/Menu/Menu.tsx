@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { MenuContent } from '../../services/models/menu';
 import './Menu.css';
 
 export default class Menu extends React.Component<MenuContent> {
 
-  private handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, url: string) => {
+  private handleClick = (event: MouseEvent<HTMLDivElement>, url: string) => {
     const element = event.currentTarget;
     //remove active to the first element
     const activeElement = document.querySelector('.menu-item.active');
@@ -24,13 +24,13 @@ export default class Menu extends React.Component<MenuContent> {
     const { items, logo } = this.props;
     const tags = items.map((item, index) => {
       const className = index === 0 ? 'item active menu-item' : 'item menu-item';
-      return <div className={className} key={item.url} onClick={(event: any) => this.handleClick(event, item.url)}>{item.title}</div>
+      return <div className={className} key={item.url} onClick={(event) => this.handleClick(event, item.url)}>{item.title}</div>
     });
     return (
-      <div className='header-menu'>
-        <nav className='container'>
+      <div className='header-menu container mx-auto'>
+        <nav className=' flex items-center justify-center'>
           {logo && <img src={logo} alt='logo' className='logo' />}
-          <div className="flex flex-col sm:flex-row">{tags}</div>
+          <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
         </nav>
       </div>
     )
