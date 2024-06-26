@@ -27,3 +27,17 @@ export interface IconLink {
     icon: string;
     url: string;
 }
+
+export interface FooterContent {
+    tel: string;
+    adresse: string;
+    email: string;
+    socialLinks: LinkContent[];
+    recentProjecst: LinkContent[];
+    recentEvents: LinkContent[];
+}
+
+export interface LinkContent {
+    title: string;
+    url: string;
+}

@@ -2,7 +2,7 @@
  * Service to manage content
  */
 
-import { MenuContent, SubMenuContent } from "./models/menu";
+import { FooterContent, MenuContent, SubMenuContent } from "./models/menu";
 import { MetaData } from "./models/meta-data";
 
 
@@ -83,6 +83,49 @@ export class ContentService {
                     }
                 ]
             } as SubMenuContent);
+        });
+    }
+
+    /**
+     * Get Footer content
+     */
+    public static getFooterContent(): Promise<FooterContent> {
+        return new Promise((resolve, reject) => {
+            resolve({
+                tel: '514-555-5555',
+                adresse: '123 rue de la rue',
+                email: 'asos@gmail.com',
+                socialLinks: [
+                    {
+                        title: 'Facebook',
+                        url: 'https://facebook.com'
+                    },
+                    {
+                        title: 'Twitter',
+                        url: 'https://twitter.com'
+                    }
+                ],
+                recentProjecst: [
+                    {
+                        title: 'Projet 1',
+                        url: '#'
+                    },
+                    {
+                        title: 'Projet 2',
+                        url: '#'
+                    }
+                ],
+                recentEvents: [
+                    {
+                        title: 'Event 1',
+                        url: '#'
+                    },
+                    {
+                        title: 'Event 2',
+                        url: '#'
+                    }
+                ]
+            } as FooterContent);
         });
     }
 } 

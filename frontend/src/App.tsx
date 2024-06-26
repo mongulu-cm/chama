@@ -5,6 +5,7 @@ import { Content } from './services/models/content';
 import { ContentService } from './services/content.service';
 import Menu from './components/Menu/Menu';
 import SubMenu from './components/SubMenu/SubMenu';
+import Footer from './components/Footer/Footer';
 
 export default class App extends React.Component<unknown, Content> {
 
@@ -12,11 +13,13 @@ export default class App extends React.Component<unknown, Content> {
     Promise.all([
       ContentService.getMenuContent(), 
       ContentService.getMetaContent(),
-      ContentService.getSubMenuContent()
-    ]).then(([menu, meta, SubMenu]) => {
+      ContentService.getSubMenuContent(),
+      ContentService.getFooterContent(),
+    ]).then(([menuContent, metaContent, subMenuContent, footerContent]) => {
       this.setState({
-        menu: menu,
-        subMenu: SubMenu,
+        menu: menuContent,
+        subMenu: subMenuContent,
+        footer: footerContent,
       });
     });
   }
@@ -30,6 +33,10 @@ export default class App extends React.Component<unknown, Content> {
     }
     if(this.state?.subMenu){
       subMenuTag = <SubMenu {...this.state?.subMenu} />;
+    }
+
+    if(this.state?.footer){
+      subMenuTag = <Footer {...this.state?.footer} />;
     }
 
     return (
