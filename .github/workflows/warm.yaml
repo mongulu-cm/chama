@@ -1,0 +1,21 @@
+name: Warm up the website
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  warmup-website:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if website is up
+        run: |
+          URL="https://aci.assos.mongulu.cm/"
+          STATUS_CODE=$(curl --max-time 60 -o /dev/null -s -w "%{http_code}\n" $URL)
+          if [ $STATUS_CODE -ne 200 ]; then
+            echo "Website is down (Status code: $STATUS_CODE)"
+            exit 1
+          else
+            echo "Website is up (Status code: $STATUS_CODE)"
+          fi
