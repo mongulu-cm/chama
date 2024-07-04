@@ -33,8 +33,6 @@ export interface FooterContent {
     adresse: string;
     email: string;
     socialLinks: LinkContent[];
-    recentProjecst: LinkContent[];
-    recentEvents: LinkContent[];
 }
 
 export interface LinkContent {

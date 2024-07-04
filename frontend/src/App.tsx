@@ -28,6 +28,7 @@ export default class App extends React.Component<unknown, Content> {
     // const { menu } = this.state;
     let menuTag = <div>Loading...</div>;
     let subMenuTag = <div>Loading...</div>;
+    let subFooter = <div>Loading...</div>;
     if (this.state?.menu) {
       menuTag = <Menu {...this.state?.menu} />;
     }
@@ -36,13 +37,14 @@ export default class App extends React.Component<unknown, Content> {
     }
 
     if(this.state?.footer){
-      subMenuTag = <Footer {...this.state?.footer} />;
+      subFooter = <Footer {...this.state?.footer} />;
     }
 
     return (
       <div className='flex flex-col '>
         {menuTag}
         {subMenuTag}
+        {subFooter}
       </div>
     )
   }
