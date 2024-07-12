@@ -4,4 +4,5 @@ export interface Content {
     menu: MenuContent;
     subMenu: SubMenuContent,
     footer: FooterContent
+    description: string;
 }
