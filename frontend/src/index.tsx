@@ -1,12 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import App from './App';
 import './index.css';
-import ContactUs from './pages/contact-us/ContactUs';
-import Welcome from './pages/welcome/Welcome';
 import reportWebVitals from './reportWebVitals';
 import { ContentService } from './services/content.service';
-import { Content } from './services/models/content';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -31,35 +28,11 @@ contentData.then((data) => {
   }
 });
 
-let content: Content;
-Promise.all([
-  ContentService.getMenuContent(),
-  ContentService.getMetaContent(),
-  ContentService.getSubMenuContent(),
-  ContentService.getFooterContent(),
-  ContentService.getDescriptionAssociation(),
-]).then(([menuContent, metaContent, subMenuContent, footerContent, descriptionContent]) => {
-  content = {
-    menu: menuContent,
-    subMenu: subMenuContent,
-    footer: footerContent,
-    description: descriptionContent,
-  };
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Welcome {...content} />
-    },
-    {
-      path: "contactez-nous",
-      element: <ContactUs {...content} />
-    },
-  ]);
 
   root.render(
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <App />
     </React.StrictMode>
   );
 
@@ -67,6 +40,6 @@ Promise.all([
   // to log results (for example: reportWebVitals(console.log))
   // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
   reportWebVitals();
-});
+
 
 

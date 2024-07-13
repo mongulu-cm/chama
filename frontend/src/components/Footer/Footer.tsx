@@ -17,7 +17,7 @@ export default class Footer extends React.Component<FooterContent> {
           <div className="w-full md:w-1/2 lg:w-1/3 flex-grow text-center md:text-center">
             <h2 className="font-bold mb-4">SUIVEZ NOS ACTUALITÉS</h2>
             {socialLinks.map((item, index) => (
-              <a href={item.url} className="underline">{item.title}</a>
+              <a key={index} href={item.url} className="underline">{item.title}</a>
             ))}
           </div>
         </div>

@@ -2,6 +2,7 @@ import { AtSymbolIcon, PhoneIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 import { SubMenuContent } from '../../services/models/menu';
 import './SubMenu.css';
+import { Link } from 'react-router-dom';
 
 export default class SubMenu extends React.Component<SubMenuContent> {
 
@@ -17,7 +18,10 @@ export default class SubMenu extends React.Component<SubMenuContent> {
           <div>{contactPhone}</div>
         </div>
         <span className='w-max-32'>{title}</span>
-        {subscriptionButton && <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-6 px-8   rounded'>S'abonner</button>}
+        {subscriptionButton && <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-6 px-8  rounded'
+        >
+            S&apos;abonner
+        </button>}
         <div className='flex gap-2'>
           {listIconLink.map((item, index) => {
             return (

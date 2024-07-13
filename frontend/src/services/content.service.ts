@@ -2,11 +2,16 @@
  * Service to manage content
  */
 
+import axios from "axios";
 import { FooterContent, MenuContent, SubMenuContent } from "./models/menu";
 import { MetaData } from "./models/meta-data";
+import { AssociationInfoContent, ProjectDto } from "./models/projects";
 
 
 export class ContentService {
+
+    public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`;
+
     constructor() {
         console.log('Content service created');
     }
@@ -37,22 +42,22 @@ export class ContentService {
                 items: [
                     {
                         title: 'Acceuil',
-                        url: 'acceuil',
+                        url: '/',
                         component: 'Welcome'
                     },
                     {
                         title: 'Evenements',
-                        url: 'listes-evenements',
+                        url: '/listes-evenements',
                         component: 'Welcome'
                     },
                     {
                         title: 'Projects',
-                        url: 'projets',
-                        component: 'Welcome'
+                        url: '/projets',
+                        component: 'Projects'
                     },
                     {
                         title: 'Contacts',
-                        url: 'nous-contactez',
+                        url: '/nous-contactez',
                         component: 'Welcome'
                     }
 
@@ -112,5 +117,35 @@ export class ContentService {
         return new Promise((resolve, reject) => {
             resolve("Bienvenue à l'association camerounaise de l'isère (ACI). Nous sommes une association à but non lucratif qui a pour objectif de promouvoir la culture camerounaise en Isère. Nous organisons des événements culturels, des ateliers, des rencontres et des échanges pour les membres de la communauté camerounaise et pour les personnes intéressées par la culture camerounaise. Nous sommes une association ouverte à tous et nous accueillons les personnes de toutes origines et de tous âges. Si vous souhaitez en savoir plus sur notre association, n'hésitez pas à nous contacter. Nous serons ravis de vous accueillir et de vous présenter nos activités.");
         });
+    }
+
+    /**
+     * Get projects contents
+     */
+    public static getProjectsContent(): Promise<ProjectDto> {
+        return axios.get(`${this.api_url}/Project`);
+        // return new Promise((resolve, reject) => {
+        //     resolve({
+        //         data: {
+        //             data: [
+        //                 {
+        //                     id: 1,
+        //                     sort: 1,
+        //                     illustration: 'projet1.jpg',
+        //                     garelies: [],
+        //                     titre: 'Projet 1',
+        //                     description: 'Ceci esst la description du projet 1',
+        //                 }
+        //             ]
+        //         }
+        //     });
+        // });
+    }
+
+    /**
+     * Get issociation info content
+     */
+    public static getAssociationInfoContent(): Promise<AssociationInfoContent> {
+        return axios.get(`${this.api_url}/association_info`);
     }
 } 
