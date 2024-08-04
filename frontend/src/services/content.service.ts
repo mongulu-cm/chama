@@ -13,6 +13,8 @@ export class ContentService {
     // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`; // strange problem use dotenv
     // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`;
     public static api_url = `https://directus.assos.mongulu.cm/items`;
+    // public static token= process.env.REACT_APP_DIRECTUS_API_KEY;
+    public static token = '1nDlxLZfpcwRT6Zck4Uup9JmUlf8B7pX';
 
     constructor() {
         console.log('Content service created');
@@ -127,13 +129,25 @@ export class ContentService {
      * Get projects contents
      */
     public static getProjectsContent(): Promise<ProjectDto> {
-         return axios.get(`${this.api_url}/project`);
+        return axios.get(`${this.api_url}/project`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`,
+                }
+            }
+         );
     }
 
     /**
      * Get issociation info content
      */
     public static getAssociationInfoContent(): Promise<AssociationInfoDto> {
-        return axios.get(`${this.api_url}/association_info`);
+        return axios.get(`${this.api_url}/association_info`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`,
+                }
+            }
+        );
     }
 } 
