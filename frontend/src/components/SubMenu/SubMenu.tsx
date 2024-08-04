@@ -11,13 +11,16 @@ export default class SubMenu extends React.Component<SubMenuContent> {
     const { contactPhone, title, subscriptionButton, listIconLink } = this.props;
 
     return (
-      <section className='flex w-full justify-around bg-gray-600 text-white items-center mx-auto py-8'>
+      <section className='flex w-full flex-col md:flex-row gap-2 justify-around bg-gray-600 text-white items-center mx-auto py-8'>
         <div className='flex gap-2 items-center'>
           <PhoneIcon className='h-8 w-8' />
           <div>{contactPhone}</div>
         </div>
         <span className='w-max-32'>{title}</span>
-        {subscriptionButton && <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-6 px-8   rounded'>S'abonner</button>}
+        {subscriptionButton && <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-6 px-8  rounded'
+        >
+            S&apos;abonner
+        </button>}
         <div className='flex gap-2'>
           {listIconLink.map((item, index) => {
             return (

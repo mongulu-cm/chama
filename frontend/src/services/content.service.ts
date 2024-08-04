@@ -2,13 +2,21 @@
  * Service to manage content
  */
 
+import axios from "axios";
 import { FooterContent, MenuContent, SubMenuContent } from "./models/menu";
 import { MetaData } from "./models/meta-data";
+import { AssociationInfoDto, ProjectDto } from "./models/projects";
 
 
 export class ContentService {
+
+    // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`; // strange problem use dotenv
+    // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`;
+    public static api_url = `https://directus.assos.mongulu.cm/items`;
+
     constructor() {
         console.log('Content service created');
+        console.log(process.env)
     }
     /**
      * Get Meta content
@@ -16,10 +24,11 @@ export class ContentService {
     public static getMetaContent(): Promise<MetaData> {
         return new Promise((resolve, reject) => {
             resolve({
-                title: 'My title',
-                description: 'My description',
-                keywords: 'My keywords',
-                linkTitle: 'My link title'
+                title: 'Aci grenoble',
+                description: 'Association camerounaise de l\'isère',
+                keywords: 'Cameroun, edutiant, association, isère',
+                linkTitle: 'My link title',
+                logoIcon: 'logo.02290fd5.png'
             });
         });
     }
@@ -37,22 +46,22 @@ export class ContentService {
                 items: [
                     {
                         title: 'Acceuil',
-                        url: 'acceuil',
+                        url: '/',
                         component: 'Welcome'
                     },
                     {
                         title: 'Evenements',
-                        url: 'listes-evenements',
-                        component: 'Welcome'
+                        url: '/listes-evenements',
+                        component: 'Projects'
                     },
                     {
                         title: 'Projects',
-                        url: 'projets',
-                        component: 'Welcome'
+                        url: '/projets',
+                        component: 'Projects'
                     },
                     {
                         title: 'Contacts',
-                        url: 'nous-contactez',
+                        url: '/nous-contactez',
                         component: 'Welcome'
                     }
 
@@ -70,7 +79,7 @@ export class ContentService {
         return new Promise((resolve, reject) => {
             resolve({
                 contactPhone: '514-555-5555',
-                title: 'Ceci est un titre de teaser pour Chama',
+                title: 'Bienvenue à l\'association camerounaise de l\'isère (ACI)',
                 subscriptionButton: true,
                 listIconLink: [
                     {
@@ -103,5 +112,28 @@ export class ContentService {
                 ]
             } as FooterContent);
         });
+    }
+
+    /**
+     * Get description association
+     */
+    public static getDescriptionAssociation(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            resolve("Bienvenue à l'association camerounaise de l'isère (ACI). Nous sommes une association à but non lucratif qui a pour objectif de promouvoir la culture camerounaise en Isère. Nous organisons des événements culturels, des ateliers, des rencontres et des échanges pour les membres de la communauté camerounaise et pour les personnes intéressées par la culture camerounaise. Nous sommes une association ouverte à tous et nous accueillons les personnes de toutes origines et de tous âges. Si vous souhaitez en savoir plus sur notre association, n'hésitez pas à nous contacter. Nous serons ravis de vous accueillir et de vous présenter nos activités.");
+        });
+    }
+
+    /**
+     * Get projects contents
+     */
+    public static getProjectsContent(): Promise<ProjectDto> {
+         return axios.get(`${this.api_url}/project`);
+    }
+
+    /**
+     * Get issociation info content
+     */
+    public static getAssociationInfoContent(): Promise<AssociationInfoDto> {
+        return axios.get(`${this.api_url}/association_info`);
     }
 } 

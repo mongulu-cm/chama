@@ -1,8 +1,13 @@
-import React, { MouseEvent } from 'react';
+import React, { Fragment, MouseEvent } from 'react';
 import { MenuContent } from '../../services/models/menu';
 import './Menu.css';
+import { Bars3BottomLeftIcon, Bars3Icon } from '@heroicons/react/24/solid';
 
-export default class Menu extends React.Component<MenuContent> {
+export interface IPropsMenu extends MenuContent {
+  history: any;
+}
+
+class Menu extends React.Component<IPropsMenu> {
 
   private handleClick = (event: MouseEvent<HTMLDivElement>, url: string) => {
     const element = event.currentTarget;
@@ -18,21 +23,36 @@ export default class Menu extends React.Component<MenuContent> {
         element.classList.add('active');
       }
     }
+
+    this.props.history.navigate(url);
   }
 
   render() {
     const { items, logo } = this.props;
     const tags = items.map((item, index) => {
       const className = index === 0 ? 'item active menu-item' : 'item menu-item';
-      return <div className={className} key={item.url} onClick={(event) => this.handleClick(event, item.url)}>{item.title}</div>
+      return <div className={className} key={item.url} onClick={(event) => this.handleClick(event, item.url)}>
+        {item.title}</div>
     });
     return (
-      <div className='header-menu container mx-auto'>
-        <nav className=' flex items-center justify-center'>
+      <Fragment>
+        <div className='header-menu container mx-auto hidden md:block'>
+          <nav className=' flex items-center justify-center'>
+            {logo && <img src={logo} alt='logo' className='logo' />}
+            <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
+          </nav>
+        </div>
+        <div className=' container mx-auto flex justify-between w-full absolute md:hidden px-4 items-center'>
           {logo && <img src={logo} alt='logo' className='logo' />}
-          <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
-        </nav>
-      </div>
+          <Bars3Icon className='h-8 w-8' />
+          
+        </div>
+          <nav className=' flex items-center justify-center z-10 h-full md:hidden'>
+            <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
+          </nav>
+      </Fragment>
     )
   }
 }
+
+export default Menu;

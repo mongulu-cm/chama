@@ -1,52 +1,105 @@
 import './App.css';
 
-import React from 'react'
-import { Content } from './services/models/content';
-import { ContentService } from './services/content.service';
-import Menu from './components/Menu/Menu';
-import SubMenu from './components/SubMenu/SubMenu';
+import React from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
+import Menu, { IPropsMenu } from './components/Menu/Menu';
+import Abonnement from './pages/abonnement/Abonnement';
+import ContactUs from './pages/contact-us/ContactUs';
+import Project from './pages/project/Project';
+import Welcome from './pages/welcome/Welcome';
+import { ContentService } from './services/content.service';
+import { Content } from './services/models/content';
 
-export default class App extends React.Component<unknown, Content> {
+class App extends React.Component<unknown, Content> {
 
-  componentDidMount(): void {
-    Promise.all([
-      ContentService.getMenuContent(), 
-      ContentService.getMetaContent(),
-      ContentService.getSubMenuContent(),
-      ContentService.getFooterContent(),
-    ]).then(([menuContent, metaContent, subMenuContent, footerContent]) => {
-      this.setState({
-        menu: menuContent,
-        subMenu: subMenuContent,
-        footer: footerContent,
-      });
-    });
-  }
+    constructor(props: any) {
+        super(props);
+        this.getContent();
 
-  render() {
-    // const { menu } = this.state;
-    let menuTag = <div>Loading...</div>;
-    let subMenuTag = <div>Loading...</div>;
-    let subFooter = <div>Loading...</div>;
-    if (this.state?.menu) {
-      menuTag = <Menu {...this.state?.menu} />;
-    }
-    if(this.state?.subMenu){
-      subMenuTag = <SubMenu {...this.state?.subMenu} />;
     }
 
-    if(this.state?.footer){
-      subFooter = <Footer {...this.state?.footer} />;
+    public getContent(): void {
+        Promise.all([
+            ContentService.getMenuContent(),
+            ContentService.getMetaContent(),
+            ContentService.getSubMenuContent(),
+            ContentService.getFooterContent(),
+            ContentService.getDescriptionAssociation(),
+            ContentService.getProjectsContent(),
+            ContentService.getAssociationInfoContent()
+        ]).then(([
+            menuContent,
+            metaContent,
+            subMenuContent,
+            footerContent,
+            descriptionContent,
+            projectsDto,
+            associationInfoContent,
+        ]) => {
+            const content = {
+                menu: menuContent,
+                subMenu: subMenuContent,
+                footer: footerContent,
+                description: descriptionContent,
+                projects: projectsDto.data.data,
+                associationInfo: associationInfoContent.data.data,
+            };
+
+            this.setState(content);
+        });
+
     }
 
-    return (
-      <div className='flex flex-col '>
-        {menuTag}
-        {subMenuTag}
-        {subFooter}
-      </div>
-    )
-  }
+    render(): React.ReactNode {
+
+        let innerHtml = <div className='w-full h-full text-center'>...isLoading</div>
+        if (this.state) {
+            const { menu, footer } = this.state;
+          
+
+            const router = createBrowserRouter([
+                {
+                    path: '/',
+                    element: <Welcome {...this.state} />,
+                },
+                {
+                    path: '/projets',
+                    element: <Project {...this.state} />,
+                },
+                {
+                    path: '/nous-contactez',
+                    element: <ContactUs {...this.state} />,
+                },
+                {
+                    path: '/abonnement',
+                    element: <Abonnement {...this.state} />,
+                },
+                 {
+                    path: '/listes-evenements',
+                    element: <Project {...this.state} />,
+                 }
+
+            ]);
+            const menuProps: IPropsMenu = {
+                ...menu,
+                history: router,
+            };
+            innerHtml = (
+
+                <div>
+                    <Menu {...menuProps} />
+                    <RouterProvider router={router} />
+                    <Footer {...footer} />
+                </div>
+            );
+        }
+        return (
+            innerHtml
+        );
+    }
+
 }
+
+export default App;
 

@@ -16,6 +16,10 @@ nav > div > .menu-item:hover {
   background: #bdcbf2;
 }
 
+nav > div > .menu-item.active {
+  background: #bdcbf2;
+}
+
 .logo {
   width: 50px;
 }
