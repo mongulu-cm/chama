@@ -2,7 +2,6 @@ import { AtSymbolIcon, PhoneIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 import { SubMenuContent } from '../../services/models/menu';
 import './SubMenu.css';
-import { Link } from 'react-router-dom';
 
 export default class SubMenu extends React.Component<SubMenuContent> {
 
@@ -12,7 +11,7 @@ export default class SubMenu extends React.Component<SubMenuContent> {
     const { contactPhone, title, subscriptionButton, listIconLink } = this.props;
 
     return (
-      <section className='flex w-full justify-around bg-gray-600 text-white items-center mx-auto py-8'>
+      <section className='flex w-full flex-col md:flex-row gap-2 justify-around bg-gray-600 text-white items-center mx-auto py-8'>
         <div className='flex gap-2 items-center'>
           <PhoneIcon className='h-8 w-8' />
           <div>{contactPhone}</div>

@@ -27,13 +27,15 @@ class App extends React.Component<unknown, Content> {
             ContentService.getFooterContent(),
             ContentService.getDescriptionAssociation(),
             ContentService.getProjectsContent(),
+            ContentService.getAssociationInfoContent()
         ]).then(([
             menuContent,
             metaContent,
             subMenuContent,
             footerContent,
             descriptionContent,
-            projectsDto
+            projectsDto,
+            associationInfoContent,
         ]) => {
             const content = {
                 menu: menuContent,
@@ -41,6 +43,7 @@ class App extends React.Component<unknown, Content> {
                 footer: footerContent,
                 description: descriptionContent,
                 projects: projectsDto.data.data,
+                associationInfo: associationInfoContent.data.data,
             };
 
             this.setState(content);
@@ -52,7 +55,6 @@ class App extends React.Component<unknown, Content> {
 
         let innerHtml = <div className='w-full h-full text-center'>...isLoading</div>
         if (this.state) {
-            console.log('state', this.state);
             const { menu, footer } = this.state;
           
 
@@ -72,7 +74,11 @@ class App extends React.Component<unknown, Content> {
                 {
                     path: '/abonnement',
                     element: <Abonnement {...this.state} />,
-                }
+                },
+                 {
+                    path: '/listes-evenements',
+                    element: <Project {...this.state} />,
+                 }
 
             ]);
             const menuProps: IPropsMenu = {

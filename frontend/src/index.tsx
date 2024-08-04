@@ -19,7 +19,6 @@ contentData.then((data) => {
   }
   const metaKeywords = document.querySelector('meta[name="keywords"]');
   if (metaKeywords && data.keywords) {
-    console.log('setting keywords', data.keywords);
     metaKeywords.setAttribute('content', data.keywords);
   }
   const metaLinkTitle = document.querySelector('link[rel="icon"]');

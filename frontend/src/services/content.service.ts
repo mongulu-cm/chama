@@ -5,12 +5,13 @@
 import axios from "axios";
 import { FooterContent, MenuContent, SubMenuContent } from "./models/menu";
 import { MetaData } from "./models/meta-data";
-import { AssociationInfoContent, ProjectDto } from "./models/projects";
+import { AssociationInfoContent, AssociationInfoDto, ProjectDto } from "./models/projects";
 
 
 export class ContentService {
 
-    public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`;
+    // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`; // strange problem use dotenv
+    public static api_url = 'http://localhost:8055/items';
 
     constructor() {
         console.log('Content service created');
@@ -21,10 +22,11 @@ export class ContentService {
     public static getMetaContent(): Promise<MetaData> {
         return new Promise((resolve, reject) => {
             resolve({
-                title: 'My title',
-                description: 'My description',
-                keywords: 'My keywords',
-                linkTitle: 'My link title'
+                title: 'Aci grenoble',
+                description: 'Association camerounaise de l\'isère',
+                keywords: 'Cameroun, edutiant, association, isère',
+                linkTitle: 'My link title',
+                logoIcon: 'logo.02290fd5.png'
             });
         });
     }
@@ -48,7 +50,7 @@ export class ContentService {
                     {
                         title: 'Evenements',
                         url: '/listes-evenements',
-                        component: 'Welcome'
+                        component: 'Projects'
                     },
                     {
                         title: 'Projects',
@@ -75,7 +77,7 @@ export class ContentService {
         return new Promise((resolve, reject) => {
             resolve({
                 contactPhone: '514-555-5555',
-                title: 'Ceci est un titre de teaser pour Chama',
+                title: 'Bienvenue à l\'association camerounaise de l\'isère (ACI)',
                 subscriptionButton: true,
                 listIconLink: [
                     {
@@ -123,29 +125,13 @@ export class ContentService {
      * Get projects contents
      */
     public static getProjectsContent(): Promise<ProjectDto> {
-        return axios.get(`${this.api_url}/Project`);
-        // return new Promise((resolve, reject) => {
-        //     resolve({
-        //         data: {
-        //             data: [
-        //                 {
-        //                     id: 1,
-        //                     sort: 1,
-        //                     illustration: 'projet1.jpg',
-        //                     garelies: [],
-        //                     titre: 'Projet 1',
-        //                     description: 'Ceci esst la description du projet 1',
-        //                 }
-        //             ]
-        //         }
-        //     });
-        // });
+         return axios.get(`${this.api_url}/Project`);
     }
 
     /**
      * Get issociation info content
      */
-    public static getAssociationInfoContent(): Promise<AssociationInfoContent> {
+    public static getAssociationInfoContent(): Promise<AssociationInfoDto> {
         return axios.get(`${this.api_url}/association_info`);
     }
 } 

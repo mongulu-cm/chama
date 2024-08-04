@@ -45,22 +45,22 @@ class Welcome extends React.Component<Content, unknown> {
     return (
       <div className='flex flex-col gap-10'>
         {subMenuTag}
-        <div className='flex flex-col items-center w-2/3 mx-auto'>
+        <div className='flex flex-col items-center w-2/3 mx-auto min-w-[90%] md:min-w-min'>
           <h2 className='text-4xl mb-2'>Qui sommes-nous ?</h2>
-          <p className='text-center'>{this.props?.description}</p>
+          <p className='text-center '>{this.props?.description}</p>
           <Link to='/contactez-nous'>
             <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4'>contactez-nous</button>
           </Link>
         </div>
         <div className='flex flex-col items-center w-2/3 mx-auto'>
           <h2 className='text-4xl mb-8'>Nos derniers projects</h2>
-          <p className='text-center flex gap-6'>
+          <p className='text-center flex gap-6 flex-col md:flex-row min-w-[90%] md:min-w-min'>
           {projectstag}
           </p>
         </div>
 
         {/* mot du president */}
-        <div className='flex flex-col items-center w-2/3 mx-auto mb-4'>
+        <div className='flex flex-col items-center w-2/3 mx-auto mb-4 min-w-[90%] md:min-w-min'>
           <h2 className='text-4xl mb-8'>Mot du président</h2>
           <p className='text-center'>
             Chers membres de l'Association,

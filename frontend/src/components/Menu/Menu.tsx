@@ -1,12 +1,13 @@
-import React, { MouseEvent } from 'react';
+import React, { Fragment, MouseEvent } from 'react';
 import { MenuContent } from '../../services/models/menu';
 import './Menu.css';
+import { Bars3BottomLeftIcon, Bars3Icon } from '@heroicons/react/24/solid';
 
 export interface IPropsMenu extends MenuContent {
   history: any;
 }
 
- class Menu extends React.Component<IPropsMenu> {
+class Menu extends React.Component<IPropsMenu> {
 
   private handleClick = (event: MouseEvent<HTMLDivElement>, url: string) => {
     const element = event.currentTarget;
@@ -34,12 +35,22 @@ export interface IPropsMenu extends MenuContent {
         {item.title}</div>
     });
     return (
-      <div className='header-menu container mx-auto'>
-        <nav className=' flex items-center justify-center'>
+      <Fragment>
+        <div className='header-menu container mx-auto hidden md:block'>
+          <nav className=' flex items-center justify-center'>
+            {logo && <img src={logo} alt='logo' className='logo' />}
+            <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
+          </nav>
+        </div>
+        <div className=' container mx-auto flex justify-between w-full absolute md:hidden px-4 items-center'>
           {logo && <img src={logo} alt='logo' className='logo' />}
-          <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
-        </nav>
-      </div>
+          <Bars3Icon className='h-8 w-8' />
+          
+        </div>
+          <nav className=' flex items-center justify-center z-10 h-full md:hidden'>
+            <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
+          </nav>
+      </Fragment>
     )
   }
 }

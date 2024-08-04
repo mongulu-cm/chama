@@ -1,5 +1,5 @@
 import { FooterContent, MenuContent, SubMenuContent } from "./menu";
-import { ProjectContent } from "./projects";
+import { AssociationInfoContent, ProjectContent } from "./projects";
 
 export interface Content {
     menu: MenuContent;
@@ -7,4 +7,5 @@ export interface Content {
     footer: FooterContent
     description: string;
     projects: ProjectContent[];
+    associationInfo?: AssociationInfoContent;
 }

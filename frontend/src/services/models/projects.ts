@@ -25,7 +25,7 @@ export interface ProjectContent {
 
 export interface AssociationInfoDto {
     data: {
-        data:AssociationInfoContent[];
+        data:AssociationInfoContent;
     }
 }
 

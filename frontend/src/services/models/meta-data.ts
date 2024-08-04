@@ -4,4 +4,5 @@ export interface MetaData {
     keywords?: string;
     linkTitle?: string;
     logoTitle?: string;
+    logoIcon?: string;
 }
