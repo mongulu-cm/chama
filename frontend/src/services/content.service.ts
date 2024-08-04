@@ -5,16 +5,18 @@
 import axios from "axios";
 import { FooterContent, MenuContent, SubMenuContent } from "./models/menu";
 import { MetaData } from "./models/meta-data";
-import { AssociationInfoContent, AssociationInfoDto, ProjectDto } from "./models/projects";
+import { AssociationInfoDto, ProjectDto } from "./models/projects";
 
 
 export class ContentService {
 
     // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`; // strange problem use dotenv
-    public static api_url = 'http://localhost:8055/items';
+    // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`;
+    public static api_url = `https://directus.assos.mongulu.cm/items`;
 
     constructor() {
         console.log('Content service created');
+        console.log(process.env)
     }
     /**
      * Get Meta content
@@ -125,7 +127,7 @@ export class ContentService {
      * Get projects contents
      */
     public static getProjectsContent(): Promise<ProjectDto> {
-         return axios.get(`${this.api_url}/Project`);
+         return axios.get(`${this.api_url}/project`);
     }
 
     /**
