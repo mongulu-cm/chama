@@ -122,12 +122,10 @@ generateEnvVars:
 # behavior.
 
 extraEnvVars:
-  {}
-  # An array to add extra environment variables
-  # E.g.
-  # extraEnvVars:
-  #  - name: STORAGE_LOCATIONS
-  #    value: "s3"
+  - name: CORS_ENABLED
+    value: "true"
+  - name: CORS_ORIGIN
+    value: "*"
 
 log:
   level: "info"
