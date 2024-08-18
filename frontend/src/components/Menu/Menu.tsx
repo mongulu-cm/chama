@@ -1,7 +1,7 @@
+import MenuIcon from '@mui/icons-material/Menu';
 import React, { Fragment, MouseEvent } from 'react';
 import { MenuContent } from '../../services/models/menu';
 import './Menu.css';
-import { Bars3BottomLeftIcon, Bars3Icon } from '@heroicons/react/24/solid';
 
 export interface IPropsMenu extends MenuContent {
   history: any;
@@ -36,7 +36,7 @@ class Menu extends React.Component<IPropsMenu> {
     });
     return (
       <Fragment>
-        <div className='header-menu container mx-auto hidden md:block'>
+        <div className='header-menu mx-auto hidden md:block'>
           <nav className=' flex items-center justify-center'>
             {logo && <img src={logo} alt='logo' className='logo' />}
             <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
@@ -44,7 +44,7 @@ class Menu extends React.Component<IPropsMenu> {
         </div>
         <div className=' container mx-auto flex justify-between w-full absolute md:hidden px-4 items-center'>
           {logo && <img src={logo} alt='logo' className='logo' />}
-          <Bars3Icon className='h-8 w-8' />
+          <MenuIcon className='h-8 w-8' />
           
         </div>
           <nav className=' flex items-center justify-center z-10 h-full md:hidden'>
