@@ -13,6 +13,7 @@ export class ContentService {
     // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`; // strange problem use dotenv
     // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`;
     public static api_url = `https://directus.assos.mongulu.cm/items`;
+    public static api_url_assets = `https://directus.assos.mongulu.cm/assets`;
 
     constructor() {
         console.log('Content service created');

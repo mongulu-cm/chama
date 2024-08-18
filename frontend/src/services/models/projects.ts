@@ -21,6 +21,7 @@ export interface ProjectContent {
     illustration:string;
     description:string;
     garelies:GalleryDto[];
+    date_created: string;
 }
 
 export interface AssociationInfoDto {
