@@ -34,7 +34,7 @@ class Welcome extends React.Component<Content, unknown> {
     const projectstag = projects.map((project, index) => {
       return (
         <div key={index} className='flex flex-col items-center w-full'>
-          <img src={project.imageUrl} alt={project.title} />
+          <img src={`data:image/jpeg;base64,${project.imageUrl}`} alt={project.title} />
           <h3>{project.title}</h3>
           <p>{project.description}</p>
         </div>

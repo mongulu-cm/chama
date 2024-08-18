@@ -15,7 +15,7 @@ export default class Project extends React.Component<Content> {
             return (
                 <div key={index} className='flex flex-col w-full gap-4 p-4 border-2 border-gray-700 rounded max-w-[60%] mx-auto'>
                     <h2 className='text-2xl font-bold text-center'>{project.titre}</h2>
-                    <img src={project.illustration} alt={project.titre} className='w-full h-96 object-cover' />
+                    <img src={`data:image/jpeg;base64,${project.illustration}`} alt={project.titre} className='w-full h-96 object-cover' />
                     <div dangerouslySetInnerHTML={{ __html: project.description }} />
                 </div>
             )
