@@ -1,5 +1,5 @@
-import { Button, IconButton } from '@mui/material';
-import React, { Component } from 'react'
+import { IconButton } from '@mui/material';
+import React from 'react'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -12,7 +12,7 @@ export interface ICarouselState {
   currentIndex: number;
 }
 
-export default class Carousel extends Component<ICarouselProps, ICarouselState> {
+export default class Carousel extends React.Component<ICarouselProps, ICarouselState> {
 
   private interval: any;
 

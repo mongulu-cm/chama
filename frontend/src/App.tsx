@@ -6,18 +6,15 @@ import Footer from './components/Footer/Footer';
 import Menu, { IPropsMenu } from './components/Menu/Menu';
 import Abonnement from './pages/abonnement/Abonnement';
 import ContactUs from './pages/contact-us/ContactUs';
+import Event from './pages/event/Event';
 import Project from './pages/project/Project';
 import Welcome from './pages/welcome/Welcome';
 import { ContentService } from './services/content.service';
 import { Content } from './services/models/content';
-import Event from './pages/event/Event';
+import DetailsEvent from './pages/event/DetailsEvent';
 
 class App extends React.Component<unknown, Content> {
 
-    constructor(props: any) {
-        super(props);
-
-    }
 
     componentDidMount(): void {
         this.getContent();
@@ -73,7 +70,7 @@ class App extends React.Component<unknown, Content> {
             const router = createBrowserRouter([
                 {
                     path: '/',
-                    element: <Welcome {...this.state} />,
+                    element: <Welcome {...this.state}  />,
                 },
                 {
                     path: '/projets',
@@ -90,7 +87,12 @@ class App extends React.Component<unknown, Content> {
                 {
                     path: '/listes-evenements',
                     element: <Event {...this.state} />,
-                }
+                },
+                {
+
+                    path: '/evenement/:id',
+                    element: <DetailsEvent {...this.state} />,
+                },
 
             ]);
             const menuProps: IPropsMenu = {

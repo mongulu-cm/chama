@@ -2,25 +2,22 @@ import React, { Fragment } from 'react'
 import { ContentService } from '../../services/content.service';
 import Card from '@mui/material/Card';
 import { Button, CardActions, CardContent, CardMedia } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export interface ICardProps {
   title: string;
   description: string;
   image: string;
-  type: 'horizontal' | 'vertical'
+  route: string;
 }
 
 export default class CardComponent extends React.Component<ICardProps, unknown> {
+
+  
   render() {
-    const { title, description, image, type } = this.props;
+    const { title, description, image, route } = this.props;
     const urlAssets = ContentService.api_url_assets;
     const truncateDescription = description.slice(0, 100) + '...';
-
-    // const cardTag: JSX.Element | null;
-    // cardTag = <div className='flex flex-col gap-4 p-4 border-2 rounded max-w-[90%] mx-auto'>
-    //   <img src={`${urlAssets}/${image}`} alt={title} className='w-full h-96 object-cover' />
-    //   <h2 className='text-2xl font-bold text-center'>{title}</h2>
-    //   <div dangerouslySetInnerHTML={{ __html: description }} />
     // </div> 
     const cardTag = (
       <Card sx={{ maxWidth: 450  }}>
@@ -35,7 +32,9 @@ export default class CardComponent extends React.Component<ICardProps, unknown> 
           <div dangerouslySetInnerHTML={{ __html: truncateDescription }} />
         </CardContent>
         <CardActions>
-          <Button variant="outlined">Plus de details</Button>
+          <Button variant="outlined" >
+            <Link  to={route} replace>Plus de details </Link>
+          </Button>
         </CardActions>
       </Card>
     );

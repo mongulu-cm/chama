@@ -11,7 +11,9 @@ export interface EventContent {
     sort:number;
     titre:string;
     description:string;
-    date_evenement: string;
+    debut_periode: string;
+    fin_periode: string;
+    date_created: string;
     illustration: string;
     galleries:GalleryDto[];
 }
