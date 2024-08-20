@@ -1,7 +1,7 @@
 import { getMonth, getYear } from 'date-fns';
 import React, { Fragment } from 'react';
 import CardComponent from '../../components/Card/CardComponent';
-import Carousel from '../../components/Carousel/Carousel';
+import Slider from '../../components/Slider/Slider';
 import AdvancedSearch from '../../components/Search/AdvancedSearch';
 import { Content } from '../../services/models/content';
 import { EventContent } from '../../services/models/event';
@@ -70,15 +70,15 @@ export default class Event extends React.Component<IEventProps, IEventState> {
         const buildCardEvent = events.map((event, index) => {
             return <CardComponent
                 key={index}
-                title={event.titre} 
-                description={event.description} 
+                title={event.titre}
+                description={event.description}
                 image={event.illustration}
                 route={`/evenement/${event.id}`} />
         });
 
 
         return (
-            
+
             <Fragment>
                 <div className='flex mt-10'>
                     <AdvancedSearch
@@ -87,10 +87,10 @@ export default class Event extends React.Component<IEventProps, IEventState> {
                         filterProjectByYear={(event: EventTarget) => this.setState({ searchValues: { ...this.state.searchValues, year: parseInt((event as HTMLInputElement).value) } })}
                     />
                 </div>
-                {/* <!-- Carousel on desktop--> */}
+                {/* <!-- Slider on desktop--> */}
                 {events.length > 0 &&
                     <div className='container mx-auto gap-4 py-16 hidden md:flex'>
-                        <Carousel components={buildCardEvent} />
+                        <Slider components={buildCardEvent} />
                     </div>
                 }
 
@@ -101,7 +101,7 @@ export default class Event extends React.Component<IEventProps, IEventState> {
 
                 {/* < !--no event found--> */}
                 {events.length === 0 && <h2 className='text-2xl text-center py-8'>Aucun evenement trouvé</h2>}
-                
+
             </Fragment>
 
         )

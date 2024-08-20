@@ -1,97 +1,51 @@
-import { IconButton } from '@mui/material';
-import React from 'react'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import React from 'react';
+import './Carousel.css';
 
 export interface ICarouselProps {
-  components: JSX.Element[];
-  intervalPlay?: number;
+    images?: string[];
+    video?: string;
 }
+export default class Carousel extends React.Component<ICarouselProps> {
+    render() {
 
-export interface ICarouselState {
-  currentIndex: number;
-}
-
-export default class Carousel extends React.Component<ICarouselProps, ICarouselState> {
-
-  private interval: any;
-
-  constructor(props: ICarouselProps) {
-    super(props);
-    this.state = {
-      currentIndex: 0
-    }
-  }
-
-  componentDidMount(): void {
-    this.interval = setInterval(() => {
-      if (this.canGoToNext()) {
-        this.goToNext();
-      } else {
-        this.setState({ currentIndex: 0 });
-        this.scrollToCurrentIndex(0);
-      }
-    }, this.props.intervalPlay || 10000);
-  }
-
-  componentWillUnmount(): void {
-    clearInterval(this.interval);
-  }
-
-  private canGoToNext(): boolean {
-    return this.state.currentIndex < this.props.components.length - 1;
-  }
-
-  private canGoToPrevious(): boolean {
-    return this.state.currentIndex > 0;
-  }
-
-  private goToNext = () => {
-    if (this.canGoToNext()) {
-      this.setState({ currentIndex: this.state.currentIndex + 1 });
-      this.scrollToCurrentIndex(this.state.currentIndex + 1);
-    }
-  }
-
-  private goToPrevious = () => {
-    if (this.canGoToPrevious()) {
-      this.setState({ currentIndex: this.state.currentIndex - 1 });
-      this.scrollToCurrentIndex(this.state.currentIndex - 1);
-    }
-  }
-
-  private scrollToCurrentIndex(index: number) {
-    const element = document.getElementById('comp-' + index);
-    const carouselContent = document.getElementById('carousel-content');
-
-    if (element && carouselContent) {
-      carouselContent.scrollTo({ behavior: 'smooth', left: element.offsetLeft - carouselContent.offsetLeft });
-    }
-  }
-
-  render() {
-    return (
-      <div className="flex gap-6 item-center max-w-full">
-        <div className='flex items-center justify-center'>
-          <IconButton color="primary" aria-label="previous" disabled={!this.canGoToPrevious()} onClick={() => this.goToPrevious()}>
-            <ArrowBackIosIcon />
-          </IconButton>
-        </div>
-        <div className='flex gap-4 flex-nowrap overflow-x-hidden py-4 basic-1/4' id='carousel-content'>
-          {this.props.components.map((component, index) => {
+        const { images, video } = this.props;
+        if (images) {
             return (
-              <div key={index} id={'comp-' + index} className='flex flex-1' style={{ minWidth: '30%' }}>
-                {component}
-              </div>
+                <div className="carousel">
+                    <div className="carousel-inner">
+                        {images.map((image: string, index: number) => {
+                            return <div key={index} className={index === 0 ? 'carousel-item active' : 'carousel-item'}>
+                                <img src={image} alt={`slide-${index}`} />
+                            </div>
+                        })}
+                    </div>
+                    <a className="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Previous</span>
+                    </a>
+                    <a className="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Next</span>
+                    </a>
+                </div>
             )
-          })}
-        </div>
-        <div className='flex items-center justify-center'>
-          <IconButton color="primary" aria-label="next" disabled={!this.canGoToNext()} onClick={() => this.goToNext()}>
-            <ArrowForwardIosIcon />
-          </IconButton>
-        </div>
-      </div>
-    )
-  }
+        } else if (video) {
+            return (
+                <div className="carousel">
+                    <div className="carousel-inner">
+                        <div className="carousel-item active">
+                            <video controls>
+                                <source src={video} type="video/mp4" />
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <div>Pas de média</div>
+            )
+        }
+
+    }
 }
