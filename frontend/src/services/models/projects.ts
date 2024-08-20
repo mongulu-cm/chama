@@ -43,4 +43,7 @@ export interface AssociationInfoContent {
     youtube: string;
     instagram: string;
     theard: string;
+    photo_president: string;
+    nom_du_president: string;
+    mot_du_president: string;
 }

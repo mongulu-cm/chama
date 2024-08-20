@@ -6,17 +6,18 @@ import Footer from './components/Footer/Footer';
 import Menu, { IPropsMenu } from './components/Menu/Menu';
 import Abonnement from './pages/abonnement/Abonnement';
 import ContactUs from './pages/contact-us/ContactUs';
+import Event from './pages/event/Event';
 import Project from './pages/project/Project';
 import Welcome from './pages/welcome/Welcome';
 import { ContentService } from './services/content.service';
 import { Content } from './services/models/content';
+import DetailsEvent from './pages/event/DetailsEvent';
 
 class App extends React.Component<unknown, Content> {
 
-    constructor(props: any) {
-        super(props);
-        this.getContent();
 
+    componentDidMount(): void {
+        this.getContent();
     }
 
     public getContent(): void {
@@ -27,7 +28,8 @@ class App extends React.Component<unknown, Content> {
             ContentService.getFooterContent(),
             ContentService.getDescriptionAssociation(),
             ContentService.getProjectsContent(),
-            ContentService.getAssociationInfoContent()
+            ContentService.getAssociationInfoContent(),
+            ContentService.getEventsContent(),
         ]).then(([
             menuContent,
             metaContent,
@@ -36,6 +38,7 @@ class App extends React.Component<unknown, Content> {
             descriptionContent,
             projectsDto,
             associationInfoContent,
+            eventsContent,
         ]) => {
             const content = {
                 menu: menuContent,
@@ -44,10 +47,16 @@ class App extends React.Component<unknown, Content> {
                 description: descriptionContent,
                 projects: projectsDto.data.data,
                 associationInfo: associationInfoContent.data.data,
+                events: eventsContent.data.data,
             };
 
             this.setState(content);
-        });
+        })
+            .catch((error) => {
+                console.error(error);
+                // go to the error page
+
+            });
 
     }
 
@@ -56,12 +65,12 @@ class App extends React.Component<unknown, Content> {
         let innerHtml = <div className='w-full h-full text-center'>...isLoading</div>
         if (this.state) {
             const { menu, footer } = this.state;
-          
+
 
             const router = createBrowserRouter([
                 {
                     path: '/',
-                    element: <Welcome {...this.state} />,
+                    element: <Welcome {...this.state}  />,
                 },
                 {
                     path: '/projets',
@@ -75,10 +84,15 @@ class App extends React.Component<unknown, Content> {
                     path: '/abonnement',
                     element: <Abonnement {...this.state} />,
                 },
-                 {
+                {
                     path: '/listes-evenements',
-                    element: <Project {...this.state} />,
-                 }
+                    element: <Event {...this.state} />,
+                },
+                {
+
+                    path: '/evenement/:id',
+                    element: <DetailsEvent {...this.state} />,
+                },
 
             ]);
             const menuProps: IPropsMenu = {

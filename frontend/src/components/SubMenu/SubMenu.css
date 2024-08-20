@@ -10,10 +10,12 @@ nav {
 
 nav > div > .menu-item {
   padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 500;
 }
 nav > div > .menu-item:hover {
   cursor: pointer;
-  background: #bdcbf2;
+  color: #758f3f;
 }
 
 .logo {

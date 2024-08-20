@@ -3,6 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SubMenu from '../../components/SubMenu/SubMenu';
 import { Content } from '../../services/models/content';
+import { ContentService } from '../../services/content.service';
+import { IconButton } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
 
 class Welcome extends React.Component<Content, unknown> {
 
@@ -41,52 +44,40 @@ class Welcome extends React.Component<Content, unknown> {
       );
     });
 
-
+    const urlDirectusAssets = ContentService.api_url_assets;
+    const urlPhotoPresident = this.props?.associationInfo?.photo_president;
+    const imagePresident = urlPhotoPresident
+      ? <img src={`${urlDirectusAssets}/${urlPhotoPresident}`} alt='Le president' className='w-1/3 rounded-tl-full rounded-bl-full rounded-br-full p-5' />
+      : <IconButton><PersonIcon /></IconButton>;
     return (
       <div className='flex flex-col gap-10'>
         {subMenuTag}
         <div className='flex flex-col items-center w-2/3 mx-auto min-w-[90%] md:min-w-min'>
           <h2 className='text-4xl mb-2'>Qui sommes-nous ?</h2>
-          <p className='text-center '>{this.props?.description}</p>
+          <div className='text-center '>{this.props?.description}</div>
           <Link to='/contactez-nous'>
             <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4'>contactez-nous</button>
           </Link>
         </div>
         <div className='flex flex-col items-center w-2/3 mx-auto'>
           <h2 className='text-4xl mb-8'>Nos derniers projects</h2>
-          <p className='text-center flex gap-6 flex-col md:flex-row min-w-[90%] md:min-w-min'>
-          {projectstag}
-          </p>
+          <div className='text-center flex gap-6 flex-col md:flex-row min-w-[90%] md:min-w-min'>
+            {projectstag}
+          </div>
         </div>
 
         {/* mot du president */}
         <div className='flex flex-col items-center w-2/3 mx-auto mb-4 min-w-[90%] md:min-w-min'>
-          <h2 className='text-4xl mb-8'>Mot du président</h2>
-          <p className='text-center'>
-            Chers membres de l'Association,
-
-            Je suis fier de vous adresser ces quelques mots en tant que président de notre association estudiantine. Cette année, nous avons accompli de belles réalisations et relevé de nombreux défis grâce à notre solidarité.
-
-            Bilan de l'Année Écoulée
-
-            Nous avons organisé des événements enrichissants et renforcé les liens entre étudiants. Nos projets communautaires ont eu un impact significatif, démontrant notre engagement à faire une différence.
-
-            Objectifs pour l'Avenir
-
-            Nous souhaitons élargir nos activités, explorer de nouveaux partenariats et créer plus d'opportunités pour vous. Améliorer notre communication interne est aussi une priorité pour une meilleure participation de chacun.
-
-            Un Merci Sincère
-
-            Merci aux membres du bureau exécutif, aux bénévoles, et à tous ceux qui ont soutenu nos initiatives. Votre engagement est essentiel à notre succès.
-
-            Invitation à S'Impliquer
-
-            Je vous invite à vous impliquer activement, à participer aux événements et à proposer de nouvelles idées. Ensemble, nous continuerons à bâtir une association forte et dynamique.
-
-
-
-          </p>
-          <span> Merci pour votre soutien et votre enthousiasme. De belles années nous attendent.Avec gratitude,</span>
+          <div className='flex gap-6 flex-col md:flex-row items-center'>
+            {imagePresident}
+            <div className=' w-2/3 flex flex-col gap-4'>
+              <p>{this.props?.associationInfo?.mot_du_president}</p>
+              <div className='flex flex-col'>
+                <h4 className='text-2xl font-bold flex-grow text-blue-600'>{this.props?.associationInfo?.nom_du_president}</h4>
+                <span>Le Président</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )

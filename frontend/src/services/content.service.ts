@@ -6,6 +6,7 @@ import axios from "axios";
 import { FooterContent, MenuContent, SubMenuContent } from "./models/menu";
 import { MetaData } from "./models/meta-data";
 import { AssociationInfoDto, ProjectDto } from "./models/projects";
+import { EventDto } from "./models/event";
 
 
 export class ContentService {
@@ -46,17 +47,17 @@ export class ContentService {
                 url: '/acceuil',
                 items: [
                     {
-                        title: 'Acceuil',
+                        title: 'Accueil',
                         url: '/',
                         component: 'Welcome'
                     },
                     {
                         title: 'Evenements',
                         url: '/listes-evenements',
-                        component: 'Projects'
+                        component: 'Events'
                     },
                     {
-                        title: 'Projects',
+                        title: 'Projet',
                         url: '/projets',
                         component: 'Projects'
                     },
@@ -132,9 +133,16 @@ export class ContentService {
     }
 
     /**
-     * Get issociation info content
+     * Get association info content
      */
     public static getAssociationInfoContent(): Promise<AssociationInfoDto> {
         return axios.get(`${this.api_url}/association_info`);
+    }
+
+    /**
+     * Get Events content
+     */
+    public static getEventsContent(): Promise<EventDto> {
+        return axios.get(`${this.api_url}/evenement`);
     }
 } 
