@@ -1,6 +1,11 @@
 import React from 'react';
+import { Content } from '../../services/models/content';
 
-export default class Adhesion extends React.Component {
+export interface IAdhesionProps {
+    helloasso_form?: string;
+}
+
+export default class Adhesion extends React.Component<Content> {
     render() {
         const iframeStyle = {
             width: '100%',
@@ -14,7 +19,7 @@ export default class Adhesion extends React.Component {
                     id="haWidget" 
                     allowTransparency={true} 
                     scrolling="auto" 
-                    src="https://www.helloasso.com/associations/collectif-mongulu/adhesions/formulaire-ahesion/widget" 
+                    src={this.props?.associationInfo?.helloasso_form}
                     style={iframeStyle}
                 ></iframe>
             </div>

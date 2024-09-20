@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import Menu, { IPropsMenu } from './components/Menu/Menu';
 import Abonnement from './pages/abonnement/Abonnement';
-import Adhesion from './components/Adhesion/Adhesion';
+import Adhesion from './pages/Adhesion/Adhesion';
 import ContactUs from './pages/contact-us/ContactUs';
 import Event from './pages/event/Event';
 import Project from './pages/project/Project';
