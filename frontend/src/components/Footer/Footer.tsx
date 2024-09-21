@@ -11,14 +11,16 @@ export default class Footer extends React.Component<FooterContent> {
           <div className="w-full md:w-1/2 lg:w-1/3 flex-grow text-center md:text-center">
             <h2 className="font-bold mb-4">CONTACTEZ-NOUS</h2>
             <span className="block" >{adresse}</span>
-            <span className="mt-2 block">Téléphone : {tel}</span>
+            {tel && <span className="mt-2 block">Téléphone : {tel}</span>}
             <span>Email : <a href={`mailto:${email}`} className="underline">{email}</a></span>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/3 flex-grow text-center md:text-center">
             <h2 className="font-bold mb-4">SUIVEZ NOS ACTUALITÉS</h2>
+            <div className='flex justify-center space-x-4'>
             {socialLinks.map((item, index) => (
               <a key={index} href={item.url} className="underline">{item.title}</a>
             ))}
+            </div>
           </div>
         </div>
       </div>

@@ -12,6 +12,8 @@ import Welcome from './pages/welcome/Welcome';
 import { ContentService } from './services/content.service';
 import { Content } from './services/models/content';
 import DetailsEvent from './pages/event/DetailsEvent';
+import { AssociationInfoContent } from './services/models/projects';
+import { FooterContent } from './services/models/menu';
 
 class App extends React.Component<unknown, Content> {
 
@@ -20,34 +22,35 @@ class App extends React.Component<unknown, Content> {
         this.getContent();
     }
 
-    public getContent(): void {
+    public  getContent(): void {
         Promise.all([
             ContentService.getMenuContent(),
             ContentService.getMetaContent(),
             ContentService.getSubMenuContent(),
-            ContentService.getFooterContent(),
             ContentService.getDescriptionAssociation(),
             ContentService.getProjectsContent(),
             ContentService.getAssociationInfoContent(),
             ContentService.getEventsContent(),
+            ContentService.getCarouselContent(),
         ]).then(([
             menuContent,
             metaContent,
             subMenuContent,
-            footerContent,
             descriptionContent,
             projectsDto,
             associationInfoContent,
             eventsContent,
+            carouselContent,
         ]) => {
             const content = {
                 menu: menuContent,
                 subMenu: subMenuContent,
-                footer: footerContent,
+                footer: this.buildFooterContent(associationInfoContent.data.data),
                 description: descriptionContent,
                 projects: projectsDto.data.data,
                 associationInfo: associationInfoContent.data.data,
                 events: eventsContent.data.data,
+                carousel: carouselContent,
             };
 
             this.setState(content);
@@ -58,6 +61,28 @@ class App extends React.Component<unknown, Content> {
 
             });
 
+    }
+
+    public buildFooterContent(associationInfo: AssociationInfoContent): FooterContent {
+        return {
+            tel: associationInfo.tel ?? '',
+            adresse: associationInfo.adresse,
+            email: associationInfo.email,
+            socialLinks: [
+                {
+                    title: 'Facebook',
+                    url: associationInfo.facebook,
+                },
+                {
+                    title: 'Instagram',
+                    url: associationInfo.instagram,
+                },
+                {
+                    title: 'Twitter',
+                    url: associationInfo.twitter,
+                },
+            ],
+        };
     }
 
     render(): React.ReactNode {
