@@ -57,6 +57,11 @@ export class ContentService {
                         component: 'Events'
                     },
                     {
+                        title: 'Adhésion',
+                        url: '/adhesion',
+                        component: 'Adhesion'
+                    },
+                    {
                         title: 'Projet',
                         url: '/projets',
                         component: 'Projects'

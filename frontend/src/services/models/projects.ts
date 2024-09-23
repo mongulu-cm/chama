@@ -46,4 +46,5 @@ export interface AssociationInfoContent {
     photo_president: string;
     nom_du_president: string;
     mot_du_president: string;
+    helloasso_form: string;
 }
