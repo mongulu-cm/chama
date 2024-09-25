@@ -1,67 +1,128 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import React from 'react';
+import { RestartAlt } from '@mui/icons-material';
+import { Button, FormControl, TextField } from '@mui/material';
+import { DatePicker, LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import 'dayjs/locale/fr';
+import React, { useState } from 'react';
 
 export interface IPropsAvancedSearch {
-    filterProjectByKeyWord: (event: EventTarget) => void;
-    filterProjectByMonth: (event: EventTarget) => void;
-    filterProjectByYear: (event: EventTarget) => void;
+    filterProjectByKeyWord: (value: string | null) => void;
+    filterProjectByPeriod: (startDate: Date | null, endDate: Date | null) => void;
 }
 
+export interface IStateAdvancedSearch {
+    startDate: Date | null;
+    endDate: Date | null;
+}
 
-export default class AdvancedSearch extends React.Component<IPropsAvancedSearch> {
+const AdvancedSearch: React.FC<IPropsAvancedSearch> = ({ filterProjectByKeyWord, filterProjectByPeriod }) => {
+    const [keyWord, setKeyWord] = useState<string>('');
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
 
-  
+    return (
+        <div className='flex bg-white flex-col md:flex-row flex-grow md:flex-grow-0 max-w-[90%] justify-center gap-6 px-6 py-4 shadow-lg rounded mx-auto items-center'>
 
-    render() {
-        const { filterProjectByKeyWord, filterProjectByMonth } = this.props;
-        return (
-            <div className='flex flex-grow max-w-[90%] md:max-w-[50%] justify-center gap-6 px-6 py-4 border-2 rounded border-gray-700 mx-auto flex-wrap items-center'>
+            <TextField
+                id="keyWord"
+                value={keyWord}
+                label="Rechercher"
+                placeholder="Rechercher"
+                variant="outlined"
+                onChange={(event) => {
+                    setKeyWord(event.target.value);
+                    filterProjectByKeyWord(event.target.value ?? '');
+                    setKeyWord(event.target.value);
+                }}
+            />
+            <div className="flex flex-col md:flex-row gap-4">
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+                    <FormControl >
+                        <div className='hidden md:block'>
+                            <DatePicker
+                                value={dayjs(startDate)}
+                                label="début periode"
+                                onChange={(newValue) => {
+                                    if (newValue) {
+                                        setStartDate(newValue?.toDate());
+                                        filterProjectByPeriod(newValue?.toDate(), endDate);
+                                    } else {
+                                        setStartDate(null);
+                                        filterProjectByPeriod(null, endDate);
+                                    }
 
-                <Box sx={{ minWidth: '200px' }}>
-                    <TextField
-                        id="keyWord"
-                        label="Rechercher un projet"
-                        variant="outlined"
-                        onChange={(event) => filterProjectByKeyWord(event.target)}
-                    />
-                </Box>
-                <FormControl>
-                    <InputLabel id="select-month-search">Mois</InputLabel>
-                    <Box sx={{ minWidth: '200px' }}>
-                        <Select fullWidth
+                                }}
+                            />
+                        </div>
+                        <div className='md:hidden'>
+                            <MobileDatePicker
+                                value={dayjs(startDate)}
+                                label="debut période"
+                                onChange={(newValue) => {
+                                    if (newValue) {
+                                        setStartDate(newValue?.toDate());
+                                        filterProjectByPeriod(newValue?.toDate(), endDate);
+                                    } else {
+                                        setStartDate(null);
+                                        filterProjectByPeriod(null, endDate);
+                                    }
 
-                            labelId="select-month-search"
-                            id="demo-simple-select"
-                            value={0}
-                            label="Mois"
-                            onChange={(event: { target: EventTarget; }) => filterProjectByMonth(event.target)}
-                        >
-                            <MenuItem value={0}>Tous les mois</MenuItem>
-                            <MenuItem value={1}>Janvier</MenuItem>
-                            <MenuItem value={2}>Février</MenuItem>
-                            <MenuItem value={3}>Mars</MenuItem>
-                            <MenuItem value={4}>Avril</MenuItem>
-                            <MenuItem value={5}>Mai</MenuItem>
-                            <MenuItem value={6}>Juin</MenuItem>
-                            <MenuItem value={7}>Juillet</MenuItem>
-                            <MenuItem value={8}>Août</MenuItem>
-                            <MenuItem value={9}>Septembre</MenuItem>
-                            <MenuItem value={10}>Octobre</MenuItem>
-                            <MenuItem value={11}>Novembre</MenuItem>
-                            <MenuItem value={12}>Décembre</MenuItem>
-                        </Select>
-                    </Box>
-                </FormControl>
-                
-                <Box sx={{ minWidth: '100px' }}>
-                    <TextField
-                        id="year"
-                        label="Année"
-                        variant="outlined"
-                        onChange={(event) => filterProjectByMonth(event.target)}
-                    />
-                </Box>
+                                }}
+                            />
+                        </div>
+                    </FormControl>
+                    <FormControl>
+                        <div className='hidden md:block'>
+                            <DatePicker
+                                className=''
+                                label="fin periode"
+                                value={dayjs(endDate)}
+                                onChange={(newValue) => {
+                                    if (newValue) {
+                                        setEndDate(newValue?.toDate());
+                                        filterProjectByPeriod(startDate, newValue?.toDate());
+                                    } else {
+                                        setEndDate(null);
+                                        filterProjectByPeriod(startDate, null);
+                                    }
+                                }}
+
+                            />
+                        </div>
+                        <div className='md:hidden'>
+                            <MobileDatePicker
+                                value={dayjs(endDate)}
+                                label="fin période mb"
+                                onChange={(newValue) => {
+                                    if (newValue) {
+                                        setEndDate(newValue?.toDate());
+                                        filterProjectByPeriod(startDate, newValue?.toDate());
+                                    } else {
+                                        setEndDate(null);
+                                        filterProjectByPeriod(startDate, null);
+                                    }
+                                }}
+                            />
+                        </div>
+                    </FormControl>
+                </LocalizationProvider>
             </div>
-        )
-    }
-}
+            <Button
+                variant="contained"
+                sx={{ textTransform: 'lowercase' }}
+                startIcon={<RestartAlt />}
+                onClick={() => {
+                    setKeyWord('');
+                    setKeyWord('');
+                    setStartDate(null);
+                    setEndDate(null);
+                    filterProjectByKeyWord(null);
+                    filterProjectByPeriod(null, null);
+                }}
+            >réinitialiser</Button>
+        </div>
+    );
+};
+
+export default AdvancedSearch;

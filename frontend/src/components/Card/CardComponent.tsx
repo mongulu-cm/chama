@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react'
-import { ContentService } from '../../services/content.service';
-import Card from '@mui/material/Card';
 import { Button, CardActions, CardContent, CardMedia } from '@mui/material';
+import Card from '@mui/material/Card';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { ContentService } from '../../services/content.service';
+import './CardComponent.css';
 
 export interface ICardProps {
   title: string;
@@ -23,7 +24,7 @@ export default class CardComponent extends React.Component<ICardProps, unknown> 
       <Card sx={{ maxWidth: 450  }}>
         <CardMedia
           component="img"
-          height="140"
+          height={140}
           image={`${urlAssets}/${image}`}
           alt={title}
         />
@@ -32,7 +33,7 @@ export default class CardComponent extends React.Component<ICardProps, unknown> 
           <div dangerouslySetInnerHTML={{ __html: truncateDescription }} />
         </CardContent>
         <CardActions>
-          <Button variant="outlined" >
+          <Button variant="outlined">
             <Link  to={route} replace>Plus de details </Link>
           </Button>
         </CardActions>
