@@ -149,7 +149,7 @@ export class ContentService {
      * Get Events content
      */
     public static getEventsContent(): Promise<EventDto> {
-        return axios.get(`${this.api_url}/evenement`);
+        return axios.get(`${this.api_url}/evenement?sort=-debut_periode`);
     }
 
     /**
