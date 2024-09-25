@@ -9,12 +9,12 @@ export default class Adhesion extends React.Component<Content> {
     render() {
         const iframeStyle = {
             width: '100%',
-            height: '750px',
+            height: '850px',
             border: 'none'
         };
 
         return (
-            <div>
+            <div className='py-4'>
                 <iframe 
                     id="haWidget"
                     title='adhesion'

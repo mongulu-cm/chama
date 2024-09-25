@@ -15,6 +15,7 @@ import { Content } from './services/models/content';
 import DetailsEvent from './pages/event/DetailsEvent';
 import { AssociationInfoContent } from './services/models/projects';
 import { FooterContent } from './services/models/menu';
+import { CircularProgress } from '@mui/material';
 
 class App extends React.Component<unknown, Content> {
 
@@ -23,7 +24,7 @@ class App extends React.Component<unknown, Content> {
         this.getContent();
     }
 
-    public  getContent(): void {
+    public getContent(): void {
         Promise.all([
             ContentService.getMenuContent(),
             ContentService.getMetaContent(),
@@ -88,7 +89,7 @@ class App extends React.Component<unknown, Content> {
 
     render(): React.ReactNode {
 
-        let innerHtml = <div className='w-full h-full text-center'>...isLoading</div>
+        let innerHtml = <div className='w-full h-screen text-center flex justify-center items-center'><CircularProgress /></div>
         if (this.state) {
             const { menu, footer } = this.state;
 
@@ -96,7 +97,7 @@ class App extends React.Component<unknown, Content> {
             const router = createBrowserRouter([
                 {
                     path: '/',
-                    element: <Welcome {...this.state}  />,
+                    element: <Welcome {...this.state} />,
                 },
                 {
                     path: '/projets',

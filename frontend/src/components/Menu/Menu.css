@@ -7,7 +7,7 @@ nav {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   width: 100%;
   /* position: sticky; */ /* Fixed le problème de z-index du composent advancedSearch avant */
-  top: 0;
+  /* top: 0; */
   background-color: white;
 
 }

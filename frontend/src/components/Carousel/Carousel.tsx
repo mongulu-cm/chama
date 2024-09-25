@@ -38,13 +38,14 @@ const Carousel: React.FC<ICarouselProps> = ({ images, video }) => {
   const isPreviousDisabled = images ? currentIndex === 0 : true;
 
 
-
   return (
     <div className=" w-full">
       <div className="overflow-hidden">
         {video && (
           <video
-            className="w-full object-cover h-2/3"
+            controls
+            style={{ height: '500px'}}
+            className="w-full"
             autoPlay
             loop
             muted
@@ -65,20 +66,20 @@ const Carousel: React.FC<ICarouselProps> = ({ images, video }) => {
           disabled={isPreviousDisabled}
           size="large"
           onClick={prevSlide}
-          className="transform -translate-y-1/2"
-          sx={
-            {
-              top: '50%',
-              left: '2%',
-              position: 'absolute',
-              ":hover": {
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              },
-              borderRadius: '50%',
-              padding: '18px',
-              backgroundColor: 'rgba(255, 255, 255, 0.3)',
-            }
-          }
+          sx={{
+            top: {
+              xs: '30%', // mobile
+              md: '40%', // desktop
+            },
+            left: '2%',
+            position: 'absolute',
+            ":hover": {
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            },
+            borderRadius: '50%',
+            padding: '18px',
+            backgroundColor: 'rgba(255, 255, 255, 0.3)',
+          }}
         >
           <ArrowBackIos />
         </Button>)}
@@ -87,10 +88,12 @@ const Carousel: React.FC<ICarouselProps> = ({ images, video }) => {
           disabled={isNextDisabled}
           size="large"
           onClick={nextSlide}
-          className="transform -translate-y-1/2 "
           sx={
             {
-              top: '50%',
+              top: {
+                xs: '30%', // mobile
+                md: '40%', // desktop
+              },
               right: '2%',
               position: 'absolute',
               ":hover": {
