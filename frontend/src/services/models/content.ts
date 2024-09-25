@@ -1,3 +1,4 @@
+import { CarouselContent } from "./carousel";
 import { EventContent } from "./event";
 import { FooterContent, MenuContent, SubMenuContent } from "./menu";
 import { AssociationInfoContent, ProjectContent } from "./projects";
@@ -10,4 +11,5 @@ export interface Content {
     projects: ProjectContent[];
     events: EventContent[];
     associationInfo?: AssociationInfoContent;
+    carousel: CarouselContent;
 }

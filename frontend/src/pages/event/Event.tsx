@@ -33,16 +33,20 @@ export default class Event extends React.Component<IEventProps, IEventState> {
     }
 
     componentDidUpdate(prevProps: Readonly<IEventProps>, prevState: Readonly<IEventState>, snapshot?: any): void {
-        if (prevState.searchValues.keyWord !== this.state.searchValues.keyWord) {
+        const searchValues = prevState.searchValues;
+        const { keyWord, month, year } = this.state.searchValues;
+
+        if (searchValues.keyWord !== keyWord) {
             this.filterEventByKeyWord();
         }
-        if (prevState.searchValues.month !== this.state.searchValues.month) {
+        if (searchValues.month !== month) {
             this.filterEventByMonth();
         }
-        if (prevState.searchValues.year !== this.state.searchValues.year) {
+        if (searchValues.year !== year) {
             this.filterEventByYear();
         }
     }
+    
     private filterEventByKeyWord = () => {
         const filterEvents = GenericHelper.filterArryByValue(this.props.events, this.state.searchValues.keyWord, 'titre');
         this.setState({ events: filterEvents });

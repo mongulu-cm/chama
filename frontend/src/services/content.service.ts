@@ -3,10 +3,11 @@
  */
 
 import axios from "axios";
+import { CarouselContent } from "./models/carousel";
+import { EventDto } from "./models/event";
 import { FooterContent, MenuContent, SubMenuContent } from "./models/menu";
 import { MetaData } from "./models/meta-data";
 import { AssociationInfoDto, ProjectDto } from "./models/projects";
-import { EventDto } from "./models/event";
 
 
 export class ContentService {
@@ -18,7 +19,7 @@ export class ContentService {
 
     constructor() {
         console.log('Content service created');
-        console.log(process.env)
+        console.log(process.env);
     }
     /**
      * Get Meta content
@@ -134,7 +135,7 @@ export class ContentService {
      * Get projects contents
      */
     public static getProjectsContent(): Promise<ProjectDto> {
-         return axios.get(`${this.api_url}/project`);
+        return axios.get(`${this.api_url}/project`);
     }
 
     /**
@@ -149,5 +150,36 @@ export class ContentService {
      */
     public static getEventsContent(): Promise<EventDto> {
         return axios.get(`${this.api_url}/evenement`);
+    }
+
+    /**
+     * Get Carousel content
+     */
+    public static async getCarouselContent(): Promise<CarouselContent> {
+        return axios.get(`${this.api_url}/Carousel`).then((response) => {
+            return ContentService.buildImageGalerie(response.data.data[0]);
+        });
+    }
+
+    /**
+     * Build image galerie
+     */
+    public static async buildImageGalerie(carousel: CarouselContent): Promise<CarouselContent> {
+        const imagesUrl = carousel?.galeries.map((galerie) => {
+            return `${this.api_url}/galerie/${galerie}`;
+        });
+
+        try {
+            const imagePromises = imagesUrl.map(url => axios.get(url));
+            const imageResponses = await Promise.all(imagePromises);
+            const images = imageResponses.map(response => response.data.data.image);
+            return {
+                ...carousel,
+                galeries: images
+            };
+        } catch (error) {
+            console.error('Error fetching images:', error);
+            throw error;
+        }
     }
 } 
