@@ -16,9 +16,8 @@ export default class Adhesion extends React.Component<Content> {
         return (
             <div>
                 <iframe 
-                    id="haWidget" 
-                    allowTransparency={true} 
-                    scrolling="auto" 
+                    id="haWidget"
+                    title='adhesion'
                     src={this.props?.associationInfo?.helloasso_form}
                     style={iframeStyle}
                 ></iframe>
