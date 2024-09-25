@@ -35,12 +35,10 @@ class Welcome extends React.Component<Content, unknown> {
     const imagePresident = urlPhotoPresident
       ? <img src={`${urlDirectusAssets}/${urlPhotoPresident}`} alt='Le president' className='w-2/3 md:w-1/3 rounded-tl-full rounded-bl-full rounded-br-full p-5' />
       : <IconButton><PersonIcon /></IconButton>;
-
-    const carouselImages = this.props?.carousel?.galeries.map((galery) => {
+    const carouselImages = this.props?.carousel?.galeries.filter(x => x).map((galery) => {
       return `${urlDirectusAssets}/${galery}`;
     });
-
-    const videoCarousel = `${urlDirectusAssets}/${this.props?.carousel?.video}`;
+    const videoCarousel = this.props?.carousel?.video ? `${urlDirectusAssets}/${this.props?.carousel?.video}` : undefined;
     return (
       <div className='flex flex-col gap-10'>
         <Carousel images={carouselImages} video={videoCarousel} />
