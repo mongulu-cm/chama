@@ -6,6 +6,12 @@ export interface EventDto {
     }
 }
 
+export interface EventFilesDto {
+    id:number;
+    evenement_id?:string;
+    directus_files_id?:string;
+}
+
 export interface EventContent {
     id:number;
     sort:number;
@@ -16,4 +22,5 @@ export interface EventContent {
     date_created: string;
     illustration: string;
     galleries:GalleryDto[];
+    photos: EventFilesDto[];
 }
