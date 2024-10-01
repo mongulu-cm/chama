@@ -68,7 +68,7 @@ class App extends React.Component<unknown, Content> {
     public buildFooterContent(associationInfo: AssociationInfoContent): FooterContent {
         return {
             tel: associationInfo.tel ?? '',
-            adresse: associationInfo.adresse,
+            adresse: associationInfo.addresse,
             email: associationInfo.email,
             socialLinks: [
                 {

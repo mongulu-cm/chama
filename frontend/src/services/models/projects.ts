@@ -36,7 +36,7 @@ export interface AssociationInfoContent {
     nom: string;
     email: string;
     tel?: string;
-    adresse: string;
+    addresse: string;
     facebook: string;
     twitter: string;
     linkedin: string;
