@@ -12,19 +12,25 @@ class Welcome extends React.Component<Content, unknown> {
 
   render() {
 
-    const projects = this.props?.projects.slice(0, 3);
-    if (projects.length < 3) {
-      const events: any = this.props?.events.slice(0, 3 - projects.length);
-      projects.push(...events);
-    }
+    const projects = this.props?.events.slice(0, 3);
+    // if (projects.length < 3) {
+    //   const events: any = this.props?.events.slice(0, 3 - projects.length);
+    //   projects.push(...events);
+    // }
 
     const urlAssets = ContentService.api_url_assets;
 
 
     const projectstag = projects.map((project, index) => {
       return (
-        <div key={index} className='flex flex-col items-center w-full'>
-          <img src={`${urlAssets}/${project.illustration}`} alt={project.titre} className='h-42' />
+        <div key={index} className='flex flex-col items-center w-1/3'>
+          <a href="/listes-evenements">
+            <img
+              src={`${urlAssets}/${project.illustration}`}
+              alt={project.titre}
+              className='w-full h-48 object-cover'
+            />
+          </a>
           <h3 className='font-semibold'>{project.titre}</h3>
         </div>
       );
@@ -50,7 +56,7 @@ class Welcome extends React.Component<Content, unknown> {
           </Link>
         </div>
         <div className='flex flex-col items-center w-2/3 mx-auto'>
-          <h2 className='text-4xl mb-8'>Nos derniers projects</h2>
+          <h2 className='text-4xl mb-8'>Nos derniers évennements</h2>
           <div className='text-center flex gap-6 flex-col md:flex-row min-w-[90%] md:min-w-min'>
             {projectstag}
           </div>

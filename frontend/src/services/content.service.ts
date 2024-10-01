@@ -62,11 +62,11 @@ export class ContentService {
                         url: '/adhesion',
                         component: 'Adhesion'
                     },
-                    {
-                        title: 'Projet',
-                        url: '/projets',
-                        component: 'Projects'
-                    },
+                    // {
+                    //     title: 'Projet',
+                    //     url: '/projets',
+                    //     component: 'Projects'
+                    // },
                     {
                         title: 'Contacts',
                         url: '/nous-contactez',
