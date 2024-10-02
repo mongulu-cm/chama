@@ -4,12 +4,6 @@ import './Carousel.css';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { Button } from '@mui/material';
 
-// const imagesText = [
-//   'https://via.placeholder.com/800x300?text=Image+1',
-//   'https://via.placeholder.com/800x300?text=Image+2',
-//   'https://via.placeholder.com/800x300?text=Image+3',
-// ];
-
 export interface ICarouselProps {
   images?: string[];
   video?: string;
@@ -52,7 +46,7 @@ const Carousel: React.FC<ICarouselProps> = ({ images, video }) => {
             src={video}
           />
         )}
-        {images && !video &&
+        {images  && !video &&
           <img
             key={currentIndex}
             src={images?.[currentIndex]}
@@ -61,7 +55,7 @@ const Carousel: React.FC<ICarouselProps> = ({ images, video }) => {
             style={{ height: '500px' }}
           />}
       </div>
-      {images && !video && (
+      {images && images.length >1 && !video && (
         <Button
           disabled={isPreviousDisabled}
           size="large"
@@ -83,7 +77,7 @@ const Carousel: React.FC<ICarouselProps> = ({ images, video }) => {
         >
           <ArrowBackIos />
         </Button>)}
-      {images && !video && (
+      {images && images.length >1 && !video && (
         <Button
           disabled={isNextDisabled}
           size="large"

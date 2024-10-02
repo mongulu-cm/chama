@@ -44,7 +44,7 @@ class Menu extends React.Component<IPropsMenu> {
     const { items, logo } = this.props;
     const tags = items.map((item, index) => {
       const className = index === 0 ? 'item active menu-item' : 'item menu-item';
-      return <div className={className} key={item.url} onClick={(event) => this.handleClick(event, item.url)}>
+      return <div className={className} key={item.url} onClick={(event) => { this.showMenuMobile(); this.handleClick(event, item.url); }}>
         {item.title}</div>
     });
     return (
@@ -58,11 +58,11 @@ class Menu extends React.Component<IPropsMenu> {
         <div className=' container mx-auto flex justify-between w-full md:hidden px-4 items-center'>
           {logo && <img src={logo} alt='logo' className='logo' />}
           <IconButton onClick={() => this.showMenuMobile()}><MenuIcon className='h-8 w-8' /></IconButton>
-          
+
         </div>
-          <nav id="mobile-menu" className='items-center justify-center z-10 h-full hidden'>
-            <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
-          </nav>
+        <nav id="mobile-menu" className='items-center justify-center z-10 h-full hidden'>
+          <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
+        </nav>
       </Fragment>
     )
   }

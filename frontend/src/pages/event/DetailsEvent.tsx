@@ -34,7 +34,7 @@ export default class DetailsEvent extends React.Component<Content, IStateDetails
           <img
             key={index}
             src={`${urlDirectusAsset}/${photo.directus_files_id}`}
-            alt={`Photo ${index + 1}`}
+            alt={`${index + 1}`}
             className='w-full h-96 object-cover'
           />
         );

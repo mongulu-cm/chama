@@ -17,7 +17,7 @@ class Welcome extends React.Component<Content, unknown> {
 
     const eventstag = events.map((event, index) => {
       return (
-        <div key={index} className='flex flex-col items-center w-1/3'>
+        <div key={index} className='flex flex-col items-center w-full md:w-1/3 '>
           <a href={`/evenement/${event.id}`}>
             <img
               src={`${urlAssets}/${event.illustration}`}
