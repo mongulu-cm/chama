@@ -12,26 +12,20 @@ class Welcome extends React.Component<Content, unknown> {
 
   render() {
 
-    const projects = this.props?.events.slice(0, 3);
-    // if (projects.length < 3) {
-    //   const events: any = this.props?.events.slice(0, 3 - projects.length);
-    //   projects.push(...events);
-    // }
-
     const urlAssets = ContentService.api_url_assets;
+    const events = this.props?.events.slice(0, 3);
 
-
-    const projectstag = projects.map((project, index) => {
+    const eventstag = events.map((event, index) => {
       return (
         <div key={index} className='flex flex-col items-center w-1/3'>
-          <a href="/listes-evenements">
+          <a href={`/evenement/${event.id}`}>
             <img
-              src={`${urlAssets}/${project.illustration}`}
-              alt={project.titre}
+              src={`${urlAssets}/${event.illustration}`}
+              alt={event.titre}
               className='w-full h-48 object-cover'
             />
           </a>
-          <h3 className='font-semibold'>{project.titre}</h3>
+          <h3 className='font-semibold'>{event.titre}</h3>
         </div>
       );
     });
@@ -55,12 +49,14 @@ class Welcome extends React.Component<Content, unknown> {
             <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4'>contactez-nous</button>
           </Link>
         </div>
-        <div className='flex flex-col items-center w-2/3 mx-auto'>
-          <h2 className='text-4xl mb-8'>Nos derniers évennements</h2>
-          <div className='text-center flex gap-6 flex-col md:flex-row min-w-[90%] md:min-w-min'>
-            {projectstag}
-          </div>
-        </div>
+        {
+          events.length>=3 && (<div className='flex flex-col items-center w-2/3 mx-auto'>
+            <h2 className='text-4xl mb-8'>Nos derniers évennements</h2>
+            <div className='text-center flex gap-6 flex-col md:flex-row min-w-[90%] md:min-w-min'>
+              {eventstag}
+            </div>
+          </div>)
+        }
 
         {/* mot du president */}
         <div className='flex flex-col items-center md:w-2/3 mx-auto mb-4 min-w-[90%] md:min-w-min'>

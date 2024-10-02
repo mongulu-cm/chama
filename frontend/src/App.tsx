@@ -45,7 +45,7 @@ class App extends React.Component<unknown, Content> {
             carouselContent,
         ]) => {
             const content = {
-                menu: menuContent,
+                menu: {...menuContent, logo: associationInfoContent.data.data.logo},
                 subMenu: subMenuContent,
                 footer: this.buildFooterContent(associationInfoContent.data.data),
                 description: descriptionContent,
@@ -128,6 +128,7 @@ class App extends React.Component<unknown, Content> {
             ]);
             const menuProps: IPropsMenu = {
                 ...menu,
+                logo: ContentService.api_url_assets + '/'+ menu.logo,
                 history: router,
             };
             innerHtml = (
