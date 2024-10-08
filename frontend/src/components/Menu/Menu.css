@@ -30,3 +30,17 @@ nav > div > .menu-item.active {
 .logo {
   width: 50px;
 }
+
+@media screen and (min-width: 478px) {
+.hidden-mobile {
+    display: none;
+    
+  }
+}
+
+@media screen and (max-width: 477px) {
+  .hidden-mobile {
+    display: none;
+  }
+  
+}

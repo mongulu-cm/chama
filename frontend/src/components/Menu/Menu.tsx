@@ -30,11 +30,16 @@ class Menu extends React.Component<IPropsMenu> {
 
   private showMenuMobile = () => {
     const element = document.getElementById('mobile-menu');
-    if (element) {
-      if (element.classList.contains('hidden')) {
-        element.classList.remove('hidden');
+    if (window.innerWidth <= 478 && element) { // Check if the screen size is mobile
+      if (element.classList.contains('hidden-mobile')) {
+        element.classList.remove('hidden-mobile');
         element.classList.add('flex');
       } else {
+        element.classList.remove('flex');
+        element.classList.add('hidden-mobile');
+      }
+    } else {
+      if (element) {
         element.classList.add('hidden');
       }
     }
@@ -60,7 +65,7 @@ class Menu extends React.Component<IPropsMenu> {
           <IconButton onClick={() => this.showMenuMobile()}><MenuIcon className='h-8 w-8' /></IconButton>
 
         </div>
-        <nav id="mobile-menu" className='items-center justify-center z-10 h-full hidden'>
+        <nav id="mobile-menu" className='items-center justify-center z-10 h-full hidden-mobile'>
           <div className="flex gap-4 flex-col sm:flex-row">{tags}</div>
         </nav>
       </Fragment>
