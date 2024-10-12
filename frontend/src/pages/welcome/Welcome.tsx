@@ -44,7 +44,7 @@ class Welcome extends React.Component<Content, unknown> {
         <Carousel images={carouselImages} video={videoCarousel} />
         <div className='flex flex-col items-center w-2/3 mx-auto min-w-[90%] md:min-w-min'>
           <h2 className='text-4xl mb-2'>Qui sommes-nous ?</h2>
-          <div className='text-center '>{this.props?.description}</div>
+          <div dangerouslySetInnerHTML={{ __html: this.props?.associationInfo?.description_activite ?? ''}} />
           <Link to='/nous-contactez'>
             <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4'>contactez-nous</button>
           </Link>
