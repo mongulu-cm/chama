@@ -23,9 +23,9 @@ export default class Footer extends React.Component<FooterContent> {
             </div>
           </div>
         </div>
-        <div className='flex justify-center rounded-full text-center gap-6 items-center font-bold text-lg px-12 py-2 border-2 mx-auto'>
-          <span className='h-full'>
-            Créer et diffusé par
+        <div className='flex justify-center rounded-full text-center gap-6 items-center font-bold text-md px-12 py-2 border-2 mx-auto'>
+          <span className='h-full uppercase'>
+            Créé et diffusé avec
           </span>
           <a href='https://www.mongulu.cm' target='_blank' rel='noreferrer'>
             <img src="https://www.mongulu.cm/public/logo.png" alt="Créer et diffuser" className="h-10" />
