@@ -2,6 +2,13 @@
 
 Chama project - Generic Cms of associations
 
+# How to run the project?
+## Installation 
+npm install
+
+## serve on dev mode
+npm run start
+
 ## How is build?
 Components services provider configuratiion of all main component about information to display, color and ...
 
