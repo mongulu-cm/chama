@@ -5,7 +5,7 @@
 import axios from "axios";
 import { CarouselContent } from "./models/carousel";
 import { EventDto } from "./models/event";
-import { FooterContent, MenuContent, SubMenuContent } from "./models/menu";
+import { MenuContent, SubMenuContent } from "./models/menu";
 import { MetaData } from "./models/meta-data";
 import { AssociationInfoDto, ProjectDto } from "./models/projects";
 
