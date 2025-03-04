@@ -19,6 +19,8 @@ import { CircularProgress } from '@mui/material';
 
 class App extends React.Component<unknown, Content> {
 
+    // inject matomo script
+
 
     componentDidMount(): void {
         this.getContent();
@@ -45,12 +47,12 @@ class App extends React.Component<unknown, Content> {
             carouselContent,
         ]) => {
             const content = {
-                menu: {...menuContent, logo: associationInfoContent.data.data.logo},
+                menu: {...menuContent, logo: associationInfoContent.data.data[0].logo},
                 subMenu: subMenuContent,
-                footer: this.buildFooterContent(associationInfoContent.data.data),
+                footer: this.buildFooterContent(associationInfoContent.data.data[0]),
                 description: descriptionContent,
                 projects: projectsDto.data.data,
-                associationInfo: associationInfoContent.data.data,
+                associationInfo: associationInfoContent.data.data[0],
                 events: eventsContent.data.data,
                 carousel: carouselContent,
             };
@@ -92,6 +94,7 @@ class App extends React.Component<unknown, Content> {
         let innerHtml = <div className='w-full h-screen text-center flex justify-center items-center'><CircularProgress /></div>
         if (this.state) {
             const { menu, footer } = this.state;
+            console.log("menu", menu);
 
 
             const router = createBrowserRouter([

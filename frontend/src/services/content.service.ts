@@ -16,6 +16,8 @@ export class ContentService {
     // public static api_url = `${process.env.REACT_APP_DIRECTUS_API_URL}/items`;
     public static api_url = `https://directus.assos.mongulu.cm/items`;
     public static api_url_assets = `https://directus.assos.mongulu.cm/assets`;
+    public static defaultSlug = 'aci';
+    
 
     constructor() {
         console.log('Content service created');
@@ -103,23 +105,12 @@ export class ContentService {
         });
     }
 
+    
     /**
-     * Get Footer content
+     * Get slug
      */
-    public static getFooterContent(): Promise<FooterContent> {
-        return new Promise((resolve, reject) => {
-            resolve({
-                tel: '514-555-5555',
-                adresse: '6 RUE Berthe de Boissieux 38000 Grenoble',
-                email: 'acigrenoble38@gmail.com',
-                socialLinks: [
-                    {
-                        title: 'Facebook',
-                        url: 'https://www.facebook.com/AssociationCamerounaiseDeLIsere'
-                    },
-                ]
-            } as FooterContent);
-        });
+    public static getSlug(): string {
+        return window.location.hostname === 'localhost' ? this.defaultSlug : window.location.hostname;
     }
 
     /**
@@ -142,21 +133,22 @@ export class ContentService {
      * Get association info content
      */
     public static getAssociationInfoContent(): Promise<AssociationInfoDto> {
-        return axios.get(`${this.api_url}/association_info`);
+        return axios.get(`${this.api_url}/associations_infos?fields=*,account.slug&search=${this.getSlug()}`);
     }
 
     /**
      * Get Events content
      */
     public static getEventsContent(): Promise<EventDto> {
-        return axios.get(`${this.api_url}/evenement?sort=-debut_periode&fields[]=*,photos.*`);
+        return axios.get(`${this.api_url}/evenement?sort=-debut_periode&fields=*,photos.*,account.slug&search=${this.getSlug()}`);
     }
 
     /**
      * Get Carousel content
      */
     public static async getCarouselContent(): Promise<CarouselContent> {
-        return axios.get(`${this.api_url}/Carousel`).then((response) => {
+        return axios.get(`${this.api_url}/Carousel?fields=*,account.slug&filter[account][slug]=${this.getSlug()}`)
+        .then((response) => {
             return ContentService.buildImageGalerie(response.data.data[0]);
         });
     }
