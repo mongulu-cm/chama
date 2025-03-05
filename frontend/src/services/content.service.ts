@@ -27,7 +27,7 @@ export class ContentService {
      * Get Meta content
      */
     public static getMetaContent(): Promise<MetaData> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve({
                 title: 'Aci grenoble',
                 description: 'Association camerounaise de l\'isère',
@@ -42,7 +42,7 @@ export class ContentService {
      * Get Menu content
      */
     public static getMenuContent(): Promise<MenuContent> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve({
                 title: 'Main Menu',
                 description: 'Menu principale',
@@ -86,7 +86,7 @@ export class ContentService {
      * Get SubMenu content
      */
     public static getSubMenuContent(): Promise<SubMenuContent> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve({
                 contactPhone: '514-555-5555',
                 title: 'Bienvenue à l\'association camerounaise de l\'isère (ACI)',
@@ -118,7 +118,7 @@ export class ContentService {
      * Get description association
      */
     public static getDescriptionAssociation(): Promise<string> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve("Bienvenue à l'association camerounaise de l'isère (ACI). Nous sommes une association à but non lucratif qui a pour objectif de promouvoir la culture camerounaise en Isère. Nous organisons des événements culturels, des ateliers, des rencontres et des échanges pour les membres de la communauté camerounaise et pour les personnes intéressées par la culture camerounaise. Nous sommes une association ouverte à tous et nous accueillons les personnes de toutes origines et de tous âges. Si vous souhaitez en savoir plus sur notre association, n'hésitez pas à nous contacter. Nous serons ravis de vous accueillir et de vous présenter nos activités.");
         });
     }

@@ -20,7 +20,7 @@ export default class Project extends React.Component<Content, IStateProject> {
         this.state = {
             searchValue: '',
             searchMonth: '',
-            filterProjects: this.props.projects,
+            filterProjects: props.projects
         }
     }
 
@@ -82,3 +82,4 @@ export default class Project extends React.Component<Content, IStateProject> {
         )
     }
 }
+
