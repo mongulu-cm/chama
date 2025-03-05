@@ -18,3 +18,7 @@ Test Architecture Menu components
 
 ### date librairies
 We use 2 dates librairies date-fns by default and dayjs for datepicker of mui, we need to investigate and remove one of them
+
+
+### Missing data utiles
+It is now possible to set missing data with the keyword MISSING_DATA or empty string for the missing content
