@@ -110,7 +110,8 @@ export class ContentService {
      * Get slug
      */
     public static getSlug(): string {
-        return window.location.hostname === 'localhost' ? this.defaultSlug : window.location.hostname;
+        const slug = window.location.hostname.split('.')[0];
+        return slug === 'localhost' ? this.defaultSlug : slug;
     }
 
     /**
