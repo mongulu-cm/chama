@@ -6,7 +6,6 @@ import axios from "axios";
 import { CarouselContent } from "./models/carousel";
 import { EventDto } from "./models/event";
 import { MenuContent, SubMenuContent } from "./models/menu";
-import { MetaData } from "./models/meta-data";
 import { AssociationInfoDto, ProjectDto } from "./models/projects";
 
 
@@ -22,20 +21,6 @@ export class ContentService {
     constructor() {
         console.log('Content service created');
         console.log(process.env);
-    }
-    /**
-     * Get Meta content
-     */
-    public static getMetaContent(): Promise<MetaData> {
-        return new Promise((resolve) => {
-            resolve({
-                title: 'Aci grenoble',
-                description: 'Association camerounaise de l\'isère',
-                keywords: 'Cameroun, edutiant, association, isère',
-                linkTitle: 'My link title',
-                logoIcon: 'logo.02290fd5.png'
-            });
-        });
     }
 
     /**

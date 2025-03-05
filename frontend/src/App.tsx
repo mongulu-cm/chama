@@ -29,18 +29,14 @@ class App extends React.Component<unknown, Content> {
     public getContent(): void {
         Promise.all([
             ContentService.getMenuContent(),
-            ContentService.getMetaContent(),
             ContentService.getSubMenuContent(),
-            ContentService.getDescriptionAssociation(),
             ContentService.getProjectsContent(),
             ContentService.getAssociationInfoContent(),
             ContentService.getEventsContent(),
             ContentService.getCarouselContent(),
         ]).then(([
             menuContent,
-            metaContent,
             subMenuContent,
-            descriptionContent,
             projectsDto,
             associationInfoContent,
             eventsContent,
@@ -50,7 +46,6 @@ class App extends React.Component<unknown, Content> {
                 menu: {...menuContent, logo: associationInfoContent.data.data[0].logo},
                 subMenu: subMenuContent,
                 footer: this.buildFooterContent(associationInfoContent.data.data[0]),
-                description: descriptionContent,
                 projects: projectsDto.data.data,
                 associationInfo: associationInfoContent.data.data[0],
                 events: eventsContent.data.data,
