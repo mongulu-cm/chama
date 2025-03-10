@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Carousel from '../../components/Carousel/Carousel';
 import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/content';
+import { MissingDataWrapper } from '../../components/MissingData';
 
 class Welcome extends React.Component<Content, unknown> {
 
@@ -44,7 +45,12 @@ class Welcome extends React.Component<Content, unknown> {
         <Carousel images={carouselImages} video={videoCarousel} />
         <div className='flex flex-col items-center w-2/3 mx-auto min-w-[90%] md:min-w-min'>
           <h2 className='text-4xl mb-2'>Qui sommes-nous ?</h2>
-          <div dangerouslySetInnerHTML={{ __html: this.props?.associationInfo?.description_activite ?? ''}} />
+          <MissingDataWrapper 
+            data={this.props?.associationInfo?.description_activite} 
+            message="La description de l'association sera bientôt disponible"
+          >
+            <div dangerouslySetInnerHTML={{ __html: this.props?.associationInfo?.description_activite ?? ''}} />
+          </MissingDataWrapper>
           <Link to='/nous-contactez'>
             <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4'>contactez-nous</button>
           </Link>
@@ -63,9 +69,19 @@ class Welcome extends React.Component<Content, unknown> {
           <div className='flex gap-6 flex-col md:flex-row items-center'>
             {imagePresident}
             <div className=' w-2/3 flex flex-col gap-4'>
-              <p>{this.props?.associationInfo?.mot_du_president}</p>
+              <MissingDataWrapper 
+                data={this.props?.associationInfo?.mot_du_president} 
+                message="Le mot du président est en cours de rédaction"
+              >
+                <p>{this.props?.associationInfo?.mot_du_president}</p>
+              </MissingDataWrapper>
               <div className='flex flex-col'>
-                <h4 className='text-2xl font-bold flex-grow text-blue-600'>{this.props?.associationInfo?.nom_du_president}</h4>
+                <MissingDataWrapper 
+                  data={this.props?.associationInfo?.nom_du_president} 
+                  message="Le nom du président est en cours de rédaction"
+                >
+                  <h4 className='text-2xl font-bold flex-grow text-blue-600'>{this.props?.associationInfo?.nom_du_president}</h4>
+                </MissingDataWrapper>
                 <span>Le Président</span>
               </div>
             </div>

@@ -5,8 +5,7 @@
 import axios from "axios";
 import { CarouselContent } from "./models/carousel";
 import { EventDto } from "./models/event";
-import { FooterContent, MenuContent, SubMenuContent } from "./models/menu";
-import { MetaData } from "./models/meta-data";
+import { MenuContent, SubMenuContent } from "./models/menu";
 import { AssociationInfoDto, ProjectDto } from "./models/projects";
 
 
@@ -20,29 +19,13 @@ export class ContentService {
     
 
     constructor() {
-        console.log('Content service created');
-        console.log(process.env);
-    }
-    /**
-     * Get Meta content
-     */
-    public static getMetaContent(): Promise<MetaData> {
-        return new Promise((resolve, reject) => {
-            resolve({
-                title: 'Aci grenoble',
-                description: 'Association camerounaise de l\'isère',
-                keywords: 'Cameroun, edutiant, association, isère',
-                linkTitle: 'My link title',
-                logoIcon: 'logo.02290fd5.png'
-            });
-        });
     }
 
     /**
      * Get Menu content
      */
     public static getMenuContent(): Promise<MenuContent> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve({
                 title: 'Main Menu',
                 description: 'Menu principale',
@@ -86,7 +69,7 @@ export class ContentService {
      * Get SubMenu content
      */
     public static getSubMenuContent(): Promise<SubMenuContent> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve({
                 contactPhone: '514-555-5555',
                 title: 'Bienvenue à l\'association camerounaise de l\'isère (ACI)',
@@ -118,7 +101,7 @@ export class ContentService {
      * Get description association
      */
     public static getDescriptionAssociation(): Promise<string> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve("Bienvenue à l'association camerounaise de l'isère (ACI). Nous sommes une association à but non lucratif qui a pour objectif de promouvoir la culture camerounaise en Isère. Nous organisons des événements culturels, des ateliers, des rencontres et des échanges pour les membres de la communauté camerounaise et pour les personnes intéressées par la culture camerounaise. Nous sommes une association ouverte à tous et nous accueillons les personnes de toutes origines et de tous âges. Si vous souhaitez en savoir plus sur notre association, n'hésitez pas à nous contacter. Nous serons ravis de vous accueillir et de vous présenter nos activités.");
         });
     }
@@ -134,14 +117,14 @@ export class ContentService {
      * Get association info content
      */
     public static getAssociationInfoContent(): Promise<AssociationInfoDto> {
-        return axios.get(`${this.api_url}/associations_infos?fields=*,account.slug&search=${this.getSlug()}`);
+        return axios.get(`${this.api_url}/associations_infos?fields=*,account.slug&filter[account][slug]=${this.getSlug()}`);
     }
 
     /**
      * Get Events content
      */
     public static getEventsContent(): Promise<EventDto> {
-        return axios.get(`${this.api_url}/evenement?sort=-debut_periode&fields=*,photos.*,account.slug&search=${this.getSlug()}`);
+        return axios.get(`${this.api_url}/evenement?sort=-debut_periode&fields=*,photos.*,account.slug&filter[account][slug]=${this.getSlug()}`);
     }
 
     /**
