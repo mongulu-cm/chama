@@ -119,14 +119,14 @@ export class ContentService {
      * Get association info content
      */
     public static getAssociationInfoContent(): Promise<AssociationInfoDto> {
-        return axios.get(`${this.api_url}/associations_infos?fields=*,account.slug&search=${this.getSlug()}`);
+        return axios.get(`${this.api_url}/associations_infos?fields=*,account.slug&filter[account][slug]=${this.getSlug()}`);
     }
 
     /**
      * Get Events content
      */
     public static getEventsContent(): Promise<EventDto> {
-        return axios.get(`${this.api_url}/evenement?sort=-debut_periode&fields=*,photos.*,account.slug&search=${this.getSlug()}`);
+        return axios.get(`${this.api_url}/evenement?sort=-debut_periode&fields=*,photos.*,account.slug&filter[account][slug]=${this.getSlug()}`);
     }
 
     /**

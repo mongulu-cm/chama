@@ -14,10 +14,14 @@ import { Content } from './services/models/content';
 import DetailsEvent from './pages/event/DetailsEvent';
 import { AssociationInfoContent } from './services/models/projects';
 import { FooterContent } from './services/models/menu';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Typography, Box } from '@mui/material';
 import Project from './pages/project/Project';
 
-class App extends React.Component<unknown, Content> {
+interface IStateApp extends Content {
+    error: boolean;
+}
+
+class App extends React.Component<unknown, IStateApp> {
 
     // inject matomo script
 
@@ -42,6 +46,12 @@ class App extends React.Component<unknown, Content> {
             eventsContent,
             carouselContent,
         ]) => {
+            if (!associationInfoContent?.data?.data?.[0]) {
+                console.error("Données de l'association manquantes - Le site est en maintenance");
+                this.setState({ error: true });
+                return;
+            }
+
             const content = {
                 menu: {...menuContent, logo: associationInfoContent.data.data[0].logo},
                 subMenu: subMenuContent,
@@ -50,16 +60,24 @@ class App extends React.Component<unknown, Content> {
                 associationInfo: associationInfoContent.data.data[0],
                 events: eventsContent.data.data,
                 carousel: carouselContent,
+                error: false
             };
-
+            this.setMetaData(content);
             this.setState(content);
         })
             .catch((error) => {
-                console.error(error);
-                // go to the error page
-
+                console.error("Erreur lors du chargement des données:", error);
+                this.setState({ error: true });
             });
+    }
 
+    public setMetaData(content: Partial<Content>): void {
+        document.title = content.associationInfo?.nom ?? '';
+        //favicon
+        const favicon = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
+        if (favicon && content.associationInfo?.logo) {
+            favicon.href = ContentService.api_url_assets + '/' + content.associationInfo?.logo;
+        }
     }
 
     public buildFooterContent(associationInfo: AssociationInfoContent): FooterContent {
@@ -85,59 +103,75 @@ class App extends React.Component<unknown, Content> {
     }
 
     render(): React.ReactNode {
+        if (!this.state) {
+            return <div className='w-full h-screen text-center flex justify-center items-center'><CircularProgress /></div>;
+        }
 
-        let innerHtml = <div className='w-full h-screen text-center flex justify-center items-center'><CircularProgress /></div>
-        if (this.state) {
-            const { menu, footer } = this.state;
-            console.log("menu", menu);
-
-
-            const router = createBrowserRouter([
-                {
-                    path: '/',
-                    element: <Welcome {...this.state} />,
-                },
-                {
-                    path: '/projets',
-                    element: <Project {...this.state} />,
-                },
-                {
-                    path: '/nous-contactez',
-                    element: <ContactUs {...this.state} />,
-                },
-                {
-                    path: '/abonnement',
-                    element: <Abonnement {...this.state} />,
-                },
-                {
-                    path: '/adhesion',
-                    element: <Adhesion {...this.state} />,
-                },
-                {
-                    path: '/listes-evenements',
-                    element: <Event {...this.state} />,
-                },
-                {
-
-                    path: '/evenement/:id',
-                    element: <DetailsEvent {...this.state} />,
-                },
-
-            ]);
-            const menuProps: IPropsMenu = {
-                ...menu,
-                logo: ContentService.api_url_assets + '/'+ menu.logo,
-                history: router,
-            };
-            innerHtml = (
-
-                <div>
-                    <Menu {...menuProps} />
-                    <RouterProvider router={router} />
-                    <Footer {...footer} />
-                </div>
+        if (this.state.error) {
+            return (
+                <Box 
+                    className='w-full h-screen text-center flex flex-col justify-center items-center'
+                    sx={{ p: 3 }}
+                >
+                    <Typography variant="h4" component="h1" gutterBottom>
+                        Site en maintenance
+                    </Typography>
+                    <Typography variant="body1">
+                        Nous sommes désolés, le site est temporairement indisponible. Veuillez réessayer plus tard.
+                    </Typography>
+                </Box>
             );
         }
+
+        const { menu, footer } = this.state;
+        console.log("menu", menu);
+
+
+        const router = createBrowserRouter([
+            {
+                path: '/',
+                element: <Welcome {...this.state} />,
+            },
+            {
+                path: '/projets',
+                element: <Project {...this.state} />,
+            },
+            {
+                path: '/nous-contactez',
+                element: <ContactUs {...this.state} />,
+            },
+            {
+                path: '/abonnement',
+                element: <Abonnement {...this.state} />,
+            },
+            {
+                path: '/adhesion',
+                element: <Adhesion {...this.state} />,
+            },
+            {
+                path: '/listes-evenements',
+                element: <Event {...this.state} />,
+            },
+            {
+
+                path: '/evenement/:id',
+                element: <DetailsEvent {...this.state} />,
+            },
+
+        ]);
+        const menuProps: IPropsMenu = {
+            ...menu,
+            logo: ContentService.api_url_assets + '/'+ menu.logo,
+            history: router,
+        };
+        const innerHtml = (
+
+            <div>
+                <Menu {...menuProps} />
+                <RouterProvider router={router} />
+                <Footer {...footer} />
+            </div>
+        );
         return (
             innerHtml
         );
