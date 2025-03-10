@@ -20,7 +20,6 @@ const MissingDataWrapper: React.FC<MissingDataWrapperProps> = ({
   fallback
 }) => {
   if (isDataMissing(data)) {
-    console.log('data', data);
     if (fallback) {
       return <>{fallback}</>;
     }

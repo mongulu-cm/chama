@@ -124,7 +124,6 @@ class App extends React.Component<unknown, IStateApp> {
         }
 
         const { menu, footer } = this.state;
-        console.log("menu", menu);
 
 
         const router = createBrowserRouter([

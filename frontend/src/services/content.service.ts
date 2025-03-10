@@ -19,8 +19,6 @@ export class ContentService {
     
 
     constructor() {
-        console.log('Content service created');
-        console.log(process.env);
     }
 
     /**
