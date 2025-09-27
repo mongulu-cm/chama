@@ -28,7 +28,7 @@ export default class Footer extends React.Component<FooterContent> {
             Créé et diffusé avec
           </span>
           <a href='https://www.mongulu.cm' target='_blank' rel='noreferrer'>
-            <img src="https://www.mongulu.cm/public/logo.png" alt="Créer et diffuser" className="h-10" />
+            <img src="https://images.mongulu.cm/logo.jpeg" alt="Créer et diffuser" className="h-10" />
           </a>
         </div>
       </footer>
